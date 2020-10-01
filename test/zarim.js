@@ -1,5 +1,7 @@
 const Zarim = artifacts.require("./Zarim.sol");
 
+require("chai").use(require("chai-as-promised")).should();
+
 const Language = {
   ENGLISH: 0,
   RUSSIAN: 1,
@@ -19,7 +21,7 @@ const Country = {
 };
 
 contract("Zarim", (accounts) => {
-  const [englishSpeaker] = accounts;
+  const [englishSpeaker, russianSpeaker] = accounts;
 
   it("should register a native English speaker from the United States", async () => {
     const zarimInstance = await Zarim.deployed();
@@ -39,7 +41,11 @@ contract("Zarim", (accounts) => {
       }
     );
 
-    const nativeSpeakers = await zarimInstance.nativeSpeakers(language, 0);
-    console.log(nativeSpeakers);
+    const registeredSpeaker = await zarimInstance.nativeSpeakers(language, 0);
+
+    registeredSpeaker.id.should.equal(
+      englishSpeaker,
+      "speaker has not been correctly registered"
+    );
   });
 });

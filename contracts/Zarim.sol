@@ -36,6 +36,6 @@ contract Zarim {
             country: _country,
             nativeLanguages: _nativeLanguages
         });
-        nativeSpeakers[uint8(Language.English)].push(speaker);
+        nativeSpeakers[_language].push(speaker);
     }
 }
