@@ -32,4 +32,8 @@ contract Zarim {
         speakers[msg.sender] = speaker;
         nativeSpeakers[_language].push(msg.sender);
     }
+
+    function getSpeakersCount(uint8 _language) public returns (uint256) {
+        return nativeSpeakers[_language].length;
+    }
 }

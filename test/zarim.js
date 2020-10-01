@@ -31,6 +31,12 @@ contract("Zarim", (accounts) => {
     const country = Country.USA;
     const language = Language.ENGLISH;
 
+    // there should be no native English speakers before registration
+    let englishSpeakersCount = await zarimInstance.getSpeakersCount.call(
+      language
+    );
+    englishSpeakersCount.toNumber().should.equal(0);
+
     const receipt = await zarimInstance.registerSpeaker(
       age,
       gender,
@@ -41,7 +47,13 @@ contract("Zarim", (accounts) => {
       }
     );
 
-    const registeredSpeaker = await zarimInstance.nativeSpeakers(language, 0);
+    englishSpeakersCount = await zarimInstance.getSpeakersCount.call(language);
+    englishSpeakersCount.toNumber().should.equal(1);
+
+    const registeredSpeaker = await zarimInstance.nativeSpeakers(
+      language,
+      englishSpeakersCount - 1
+    );
     const speakerProfile = await zarimInstance.speakers(registeredSpeaker);
     speakerProfile.id.should.equal(
       englishSpeaker,
