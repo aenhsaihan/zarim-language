@@ -7,14 +7,11 @@ contract Zarim {
     enum Language {English, Spanish, Russian}
     enum Country {USA, Spain, Russia}
 
-    mapping(uint8 => Speaker[]) public nativeSpeakers;
+    mapping(address => Speaker) public speakers;
+    mapping(uint8 => address[]) public nativeSpeakers;
 
     struct Speaker {
         address id;
-        uint8[] nativeLanguages;
-        // uint8[] targetLanguages;
-        // mapping(uint8 => uint256) nativePrices;
-        // mapping(uint8 => uint256) targetPrices;
         uint8 age;
         uint8 gender;
         uint8 country;
@@ -26,16 +23,13 @@ contract Zarim {
         uint8 _country,
         uint8 _language
     ) public {
-        uint8[] memory _nativeLanguages = new uint8[](1);
-        _nativeLanguages[0] = _language;
-
         Speaker memory speaker = Speaker({
             id: msg.sender,
             age: _age,
             gender: _gender,
-            country: _country,
-            nativeLanguages: _nativeLanguages
+            country: _country
         });
-        nativeSpeakers[_language].push(speaker);
+        speakers[msg.sender] = speaker;
+        nativeSpeakers[_language].push(msg.sender);
     }
 }

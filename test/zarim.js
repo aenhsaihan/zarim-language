@@ -42,10 +42,16 @@ contract("Zarim", (accounts) => {
     );
 
     const registeredSpeaker = await zarimInstance.nativeSpeakers(language, 0);
-
-    registeredSpeaker.id.should.equal(
+    const speakerProfile = await zarimInstance.speakers(registeredSpeaker);
+    speakerProfile.id.should.equal(
       englishSpeaker,
       "speaker has not been correctly registered"
     );
+    speakerProfile.age
+      .toNumber()
+      .should.equal(age, "age has not been correctly registered");
+    speakerProfile.gender
+      .toNumber()
+      .should.equal(gender, "gender has not been correctly registered");
   });
 });
