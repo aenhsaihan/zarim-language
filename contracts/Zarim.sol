@@ -21,7 +21,7 @@ contract Zarim {
         uint8 _age,
         uint8 _gender,
         uint8 _country,
-        uint8 _language
+        uint8[] memory _languages
     ) public {
         Speaker memory speaker = Speaker({
             id: msg.sender,
@@ -30,10 +30,13 @@ contract Zarim {
             country: _country
         });
         speakers[msg.sender] = speaker;
-        nativeSpeakers[_language].push(msg.sender);
+
+        for (uint8 i = 0; i < _languages.length; i++) {
+            nativeSpeakers[_languages[i]].push(msg.sender);
+        }
     }
 
-    function getSpeakersCount(uint8 _language) public returns (uint256) {
+    function getSpeakersCount(uint8 _language) public view returns (uint256) {
         return nativeSpeakers[_language].length;
     }
 }

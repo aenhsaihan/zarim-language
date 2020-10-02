@@ -21,14 +21,14 @@ const Country = {
 };
 
 contract("Zarim", (accounts) => {
-  const [englishSpeaker, britishSpeaker, russianSpeaker] = accounts;
+  const [englishSpeaker, britishSpeaker, multilingualSpeaker] = accounts;
   let zarimInstance;
 
   const englishSpeakerProfile = {
     age: 18,
     gender: Gender.MALE,
     country: Country.USA,
-    language: Language.ENGLISH,
+    language: [Language.ENGLISH],
     account: englishSpeaker,
   };
 
@@ -36,8 +36,16 @@ contract("Zarim", (accounts) => {
     age: 23,
     gender: Gender.FEMALE,
     country: Country.UK,
-    language: Language.ENGLISH,
+    language: [Language.ENGLISH],
     account: britishSpeaker,
+  };
+
+  const multilingualSpeakerProfile = {
+    age: 18,
+    gender: Gender.MALE,
+    country: Country.JAPAN,
+    language: [Language.ENGLISH, Language.RUSSIAN, Language.JAPANESE],
+    account: multilingualSpeaker,
   };
 
   beforeEach(async () => {
@@ -136,6 +144,43 @@ contract("Zarim", (accounts) => {
         Language.ENGLISH
       );
       englishSpeakersCount.toNumber().should.equal(2);
+    });
+  });
+
+  describe("registration of multilingual native speaker", async () => {
+    it("should register a multilingual native speaker from Japan", async () => {
+      const { age, gender, country, language } = multilingualSpeakerProfile;
+
+      const receipt = await zarimInstance.registerSpeaker(
+        age,
+        gender,
+        country,
+        language,
+        {
+          from: multilingualSpeaker,
+        }
+      );
+    });
+
+    it("should have three native English speakers after registration", async () => {
+      let englishSpeakersCount = await zarimInstance.getSpeakersCount.call(
+        Language.ENGLISH
+      );
+      englishSpeakersCount.toNumber().should.equal(3);
+    });
+
+    it("should have one native Japanese speaker after registration", async () => {
+      let japaneseSpeakersCount = await zarimInstance.getSpeakersCount.call(
+        Language.JAPANESE
+      );
+      japaneseSpeakersCount.toNumber().should.equal(1);
+    });
+
+    it("should have one native Russian speaker after registration", async () => {
+      let russianSpeakersCount = await zarimInstance.getSpeakersCount.call(
+        Language.RUSSIAN
+      );
+      russianSpeakersCount.toNumber().should.equal(1);
     });
   });
 });
