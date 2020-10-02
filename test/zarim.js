@@ -103,6 +103,17 @@ contract("Zarim", (accounts) => {
       );
       englishSpeakersCount.toNumber().should.equal(1);
     });
+
+    it("should not permit duplicate account", async () => {
+      const { age, gender, country, language } = englishSpeakerProfile;
+
+      await expectRevert(
+        zarimInstance.registerSpeaker(age, gender, country, language, {
+          from: englishSpeaker,
+        }),
+        "Speaker is already registered"
+      );
+    });
   });
 
   describe("registration of second native English speaker", async () => {
@@ -183,19 +194,6 @@ contract("Zarim", (accounts) => {
         Language.RUSSIAN
       );
       russianSpeakersCount.toNumber().should.equal(1);
-    });
-  });
-
-  describe("duplicate account registration", async () => {
-    it("should not permit duplicate account", async () => {
-      const { age, gender, country, language } = englishSpeakerProfile;
-
-      await expectRevert(
-        zarimInstance.registerSpeaker(age, gender, country, language, {
-          from: englishSpeaker,
-        }),
-        "Speaker is already registered"
-      );
     });
   });
 });
