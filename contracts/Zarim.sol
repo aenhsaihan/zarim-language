@@ -23,6 +23,10 @@ contract Zarim {
         uint8 _country,
         uint8[] memory _languages
     ) public {
+        require(
+            speakers[msg.sender].id == address(0x0),
+            "Speaker is already registered"
+        );
         Speaker memory speaker = Speaker({
             id: msg.sender,
             age: _age,

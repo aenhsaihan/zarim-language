@@ -1,5 +1,7 @@
 const Zarim = artifacts.require("./Zarim.sol");
 
+const { expectRevert } = require("@openzeppelin/test-helpers");
+
 require("chai").use(require("chai-as-promised")).should();
 
 const Language = {
@@ -181,6 +183,19 @@ contract("Zarim", (accounts) => {
         Language.RUSSIAN
       );
       russianSpeakersCount.toNumber().should.equal(1);
+    });
+  });
+
+  describe("duplicate account registration", async () => {
+    it("should not permit duplicate account", async () => {
+      const { age, gender, country, language } = englishSpeakerProfile;
+
+      await expectRevert(
+        zarimInstance.registerSpeaker(age, gender, country, language, {
+          from: englishSpeaker,
+        }),
+        "Speaker is already registered"
+      );
     });
   });
 });
