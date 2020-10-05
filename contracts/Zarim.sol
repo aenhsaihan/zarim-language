@@ -17,6 +17,12 @@ contract Zarim {
         uint8 country;
     }
 
+    event Register(
+        address indexed _speaker,
+        uint8 indexed _country,
+        uint8[] indexed _languages
+    );
+
     function registerSpeaker(
         uint8 _age,
         uint8 _gender,
@@ -38,6 +44,8 @@ contract Zarim {
         for (uint8 i = 0; i < _languages.length; i++) {
             nativeSpeakers[_languages[i]].push(msg.sender);
         }
+
+        emit Register(msg.sender, _country, _languages);
     }
 
     function getSpeakersCount(uint8 _language) public view returns (uint256) {
