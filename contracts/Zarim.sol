@@ -9,6 +9,7 @@ contract Zarim {
 
     mapping(address => Speaker) public speakers;
     mapping(uint8 => address[]) public nativeSpeakers;
+    mapping(address => uint256) public balanceOf;
 
     struct Speaker {
         address id;
@@ -50,5 +51,19 @@ contract Zarim {
 
     function getSpeakersCount(uint8 _language) public view returns (uint256) {
         return nativeSpeakers[_language].length;
+    }
+
+    function deposit() public payable {
+        require(
+            speakers[msg.sender].id != address(0x0),
+            "Speaker is not registered"
+        );
+        balanceOf[msg.sender] += msg.value;
+    }
+
+    function withdraw() public {
+        uint256 amount = balanceOf[msg.sender];
+        balanceOf[msg.sender] = 0;
+        msg.sender.transfer(amount);
     }
 }
