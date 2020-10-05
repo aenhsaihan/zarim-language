@@ -160,5 +160,16 @@ contract("Zarim", (accounts) => {
       const currentBalance = await zarimInstance.balanceOf.call(englishSpeaker);
       currentBalance.toNumber().should.equal(amount);
     });
+
+    it("should not allow deposits from an unregistered speaker", async () => {
+      const amount = 100;
+      await expectRevert(
+        zarimInstance.deposit({
+          from: unregisteredSpeaker,
+          value: amount,
+        }),
+        "Speaker is not registered"
+      );
+    });
   });
 });
