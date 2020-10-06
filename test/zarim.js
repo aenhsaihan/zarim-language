@@ -24,7 +24,12 @@ const Country = {
 };
 
 contract("Zarim", (accounts) => {
-  const [englishSpeaker, multilingualSpeaker, unregisteredSpeaker] = accounts;
+  const [
+    englishSpeaker,
+    multilingualSpeaker,
+    unregisteredSpeaker,
+    learner,
+  ] = accounts;
   let zarimInstance;
   const BigNumber = web3.utils.BN;
 
@@ -183,7 +188,24 @@ contract("Zarim", (accounts) => {
       await zarimInstance.withdraw({ from: englishSpeaker });
 
       const currentBalance = await zarimInstance.balanceOf.call(englishSpeaker);
+      ("");
       currentBalance.toNumber().should.equal(0);
+    });
+  });
+
+  describe("initiating the session", async () => {
+    it("should track the session", async () => {
+      const language = Language.ENGLISH;
+      const price = 100;
+
+      const receipt = await zarimInstance.initiateSession(language, price, {
+        from: learner,
+      });
+
+      const session = await zarimInstance.sessions.call(learner);
+
+      session.language.toNumber().should.equal(language);
+      session.price.toNumber().should.equal(price);
     });
   });
 });

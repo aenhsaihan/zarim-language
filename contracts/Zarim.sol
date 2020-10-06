@@ -10,6 +10,7 @@ contract Zarim {
     mapping(address => Speaker) public speakers;
     mapping(uint8 => address[]) public nativeSpeakers;
     mapping(address => uint256) public balanceOf;
+    mapping(address => Session) public sessions;
 
     struct Speaker {
         address id;
@@ -18,10 +19,21 @@ contract Zarim {
         uint8 country;
     }
 
+    struct Session {
+        uint8 language;
+        uint256 price;
+    }
+
     event Register(
         address indexed _speaker,
         uint8 indexed _country,
         uint8[] indexed _languages
+    );
+
+    event InitiateSession(
+        address indexed _learner,
+        uint8 indexed _language,
+        uint256 indexed _price
     );
 
     function registerSpeaker(
@@ -65,5 +77,13 @@ contract Zarim {
         uint256 amount = balanceOf[msg.sender];
         balanceOf[msg.sender] = 0;
         msg.sender.transfer(amount);
+    }
+
+    function initiateSession(uint8 _language, uint256 _price) public {
+        Session memory session = Session({language: _language, price: _price});
+
+        sessions[msg.sender] = session;
+
+        emit InitiateSession(msg.sender, _language, _price);
     }
 }
