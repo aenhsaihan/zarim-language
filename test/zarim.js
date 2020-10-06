@@ -1,6 +1,7 @@
 const Zarim = artifacts.require("./Zarim.sol");
 
 const { expectRevert } = require("@openzeppelin/test-helpers");
+const { web3 } = require("@openzeppelin/test-helpers/src/setup");
 
 require("chai").use(require("chai-as-promised")).should();
 
@@ -109,7 +110,7 @@ contract("Zarim", (accounts) => {
     });
   });
 
-  describe.skip("registration of multilingual native speaker", async () => {
+  describe("registration of multilingual native speaker", async () => {
     it("should register a multilingual native speaker from Japan", async () => {
       const { age, gender, country, language } = multilingualSpeakerProfile;
 
@@ -170,6 +171,19 @@ contract("Zarim", (accounts) => {
         }),
         "Speaker is not registered"
       );
+    });
+  });
+
+  describe("withdraw", async () => {
+    it("should transfer balance to withdrawing speaker", async () => {
+      const previousBalance = await zarimInstance.balanceOf.call(
+        englishSpeaker
+      );
+
+      await zarimInstance.withdraw({ from: englishSpeaker });
+
+      const currentBalance = await zarimInstance.balanceOf.call(englishSpeaker);
+      currentBalance.toNumber().should.equal(0);
     });
   });
 });
