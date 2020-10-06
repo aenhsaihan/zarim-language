@@ -2,11 +2,6 @@
 pragma solidity >=0.4.21 <0.7.0;
 
 contract Zarim {
-    uint256 storedData;
-
-    enum Language {English, Spanish, Russian}
-    enum Country {USA, Spain, Russia}
-
     mapping(address => Speaker) public speakers;
     mapping(uint8 => address[]) public nativeSpeakers;
     mapping(address => uint256) public balanceOf;
@@ -20,6 +15,7 @@ contract Zarim {
     }
 
     struct Session {
+        address speaker;
         uint8 language;
         uint256 price;
     }
@@ -34,6 +30,14 @@ contract Zarim {
         address indexed _learner,
         uint8 indexed _language,
         uint256 indexed _price
+    );
+
+    event AcceptSession(address indexed _learner, address indexed _speaker);
+
+    event TerminateSession(
+        address indexed _learner,
+        address indexed _speaker,
+        uint256 indexed _total
     );
 
     function registerSpeaker(
@@ -77,10 +81,43 @@ contract Zarim {
 
     function initiateSession(uint8 _language, uint256 _price) public {
         require(balanceOf[msg.sender] > 0, "Learner has no balance");
-        Session memory session = Session({language: _language, price: _price});
+        Session memory session = Session({
+            speaker: address(0x0),
+            language: _language,
+            price: _price
+        });
 
         sessions[msg.sender] = session;
 
         emit InitiateSession(msg.sender, _language, _price);
     }
+
+    function acceptSession(address _learner) public {
+        require(
+            speakers[msg.sender].id == msg.sender,
+            "Speaker is not registered"
+        );
+
+        Session storage session = sessions[_learner];
+        session.speaker = msg.sender;
+
+        emit AcceptSession(_learner, msg.sender);
+    }
+
+    // function terminateSession(address _learner, uint256 _duration) public {
+    //     require(
+    //         msg.sender == _learner || msg.sender == _speaker,
+    //         "Only learner or speaker can terminate session"
+    //     );
+    //     Session memory session = sessions[_learner];
+
+    //     // charge learner for session
+    //     uint256 total = session.price * _duration;
+    //     balanceOf[_learner] -= total;
+    //     balanceOf[_speaker] += total;
+
+    //     delete sessions[_learner];
+
+    //     emit TerminateSession(_learner, _speaker, total);
+    // }
 }

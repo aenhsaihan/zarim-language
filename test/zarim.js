@@ -207,4 +207,28 @@ contract("Zarim", (accounts) => {
       session.price.toNumber().should.equal(price);
     });
   });
+
+  describe("accepting the session", async () => {
+    it("should not allow unregistered speakers to accept session", async () => {
+      await expectRevert(
+        zarimInstance.acceptSession(learner, {
+          from: unregisteredSpeaker,
+        }),
+        "Speaker is not registered"
+      );
+    });
+  });
+
+  // describe("terminating the session", async () => {
+  //   const duration = 60;
+
+  //   it("should prevent unknown termination", async () => {
+  //     await expectRevert(
+  //       zarimInstance.terminateSession(language, price, {
+  //         from: unregisteredSpeaker,
+  //       }),
+  //       "Learner has no balance"
+  //     );
+  //   });
+  // });
 });
