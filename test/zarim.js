@@ -217,6 +217,15 @@ contract("Zarim", (accounts) => {
         "Speaker is not registered"
       );
     });
+
+    it("should allow registered speaker to accept session", async () => {
+      const receipt = await zarimInstance.acceptSession(learner, {
+        from: englishSpeaker,
+      });
+
+      const session = await zarimInstance.sessions.call(learner);
+      session.speaker.should.equal(englishSpeaker);
+    });
   });
 
   // describe("terminating the session", async () => {
