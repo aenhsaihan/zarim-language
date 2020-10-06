@@ -66,10 +66,6 @@ contract Zarim {
     }
 
     function deposit() public payable {
-        require(
-            speakers[msg.sender].id != address(0x0),
-            "Speaker is not registered"
-        );
         balanceOf[msg.sender] += msg.value;
     }
 

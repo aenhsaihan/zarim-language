@@ -166,17 +166,6 @@ contract("Zarim", (accounts) => {
       const currentBalance = await zarimInstance.balanceOf.call(englishSpeaker);
       currentBalance.toNumber().should.equal(amount);
     });
-
-    it("should not allow deposits from an unregistered speaker", async () => {
-      const amount = 100;
-      await expectRevert(
-        zarimInstance.deposit({
-          from: unregisteredSpeaker,
-          value: amount,
-        }),
-        "Speaker is not registered"
-      );
-    });
   });
 
   describe("withdraw", async () => {
@@ -206,12 +195,14 @@ contract("Zarim", (accounts) => {
     });
 
     it("should track the session", async () => {
+      const deposit = 100;
+      await zarimInstance.deposit({ from: learner, value: deposit });
+
       const receipt = await zarimInstance.initiateSession(language, price, {
         from: learner,
       });
 
       const session = await zarimInstance.sessions.call(learner);
-
       session.language.toNumber().should.equal(language);
       session.price.toNumber().should.equal(price);
     });
