@@ -188,16 +188,24 @@ contract("Zarim", (accounts) => {
       await zarimInstance.withdraw({ from: englishSpeaker });
 
       const currentBalance = await zarimInstance.balanceOf.call(englishSpeaker);
-      ("");
       currentBalance.toNumber().should.equal(0);
     });
   });
 
   describe("initiating the session", async () => {
-    it("should track the session", async () => {
-      const language = Language.ENGLISH;
-      const price = 100;
+    const language = Language.ENGLISH;
+    const price = 100;
 
+    it("prevent session if there is no balance", async () => {
+      await expectRevert(
+        zarimInstance.initiateSession(language, price, {
+          from: learner,
+        }),
+        "Learner has no balance"
+      );
+    });
+
+    it("should track the session", async () => {
       const receipt = await zarimInstance.initiateSession(language, price, {
         from: learner,
       });

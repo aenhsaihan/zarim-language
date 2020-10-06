@@ -80,6 +80,7 @@ contract Zarim {
     }
 
     function initiateSession(uint8 _language, uint256 _price) public {
+        require(balanceOf[msg.sender] > 0, "Learner has no balance");
         Session memory session = Session({language: _language, price: _price});
 
         sessions[msg.sender] = session;
