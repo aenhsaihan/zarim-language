@@ -18,6 +18,7 @@ contract Zarim {
         address speaker;
         uint8 language;
         uint256 price;
+        uint256 start;
     }
 
     event Register(
@@ -84,7 +85,8 @@ contract Zarim {
         Session memory session = Session({
             speaker: address(0x0),
             language: _language,
-            price: _price
+            price: _price,
+            start: 0
         });
 
         sessions[msg.sender] = session;
@@ -100,11 +102,12 @@ contract Zarim {
 
         Session storage session = sessions[_learner];
         session.speaker = msg.sender;
+        session.start = block.timestamp;
 
         emit AcceptSession(_learner, msg.sender);
     }
 
-    function terminateSession(address _learner, uint256 _duration) public {
+    function terminateSession(address _learner) public {
         Session memory session = sessions[_learner];
 
         require(
@@ -113,7 +116,8 @@ contract Zarim {
         );
 
         // charge learner for session
-        uint256 total = session.price * _duration;
+        uint256 duration = block.timestamp - session.start;
+        uint256 total = session.price * duration;
         balanceOf[_learner] -= total;
         balanceOf[session.speaker] += total;
 

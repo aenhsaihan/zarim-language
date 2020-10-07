@@ -233,7 +233,7 @@ contract("Zarim", (accounts) => {
 
     it("should prevent unknown termination", async () => {
       await expectRevert(
-        zarimInstance.terminateSession(learner, duration, {
+        zarimInstance.terminateSession(learner, {
           from: unregisteredSpeaker,
         }),
         "Only learner or speaker can terminate session"
