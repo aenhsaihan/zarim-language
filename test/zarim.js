@@ -184,10 +184,11 @@ contract("Zarim", (accounts) => {
   describe("initiating the session", async () => {
     const language = Language.ENGLISH;
     const price = 100;
+    const duration = 60;
 
     it("prevent session if there is no balance", async () => {
       await expectRevert(
-        zarimInstance.initiateSession(language, price, {
+        zarimInstance.initiateSession(language, price, duration, {
           from: learner,
         }),
         "Learner has no balance"
@@ -198,13 +199,19 @@ contract("Zarim", (accounts) => {
       const deposit = 100;
       await zarimInstance.deposit({ from: learner, value: deposit });
 
-      const receipt = await zarimInstance.initiateSession(language, price, {
-        from: learner,
-      });
+      const receipt = await zarimInstance.initiateSession(
+        language,
+        price,
+        duration,
+        {
+          from: learner,
+        }
+      );
 
       const session = await zarimInstance.sessions.call(learner);
       session.language.toNumber().should.equal(language);
       session.price.toNumber().should.equal(price);
+      session.maxDuration.toNumber().should.equal(duration);
     });
   });
 

@@ -19,6 +19,7 @@ contract Zarim {
         uint8 language;
         uint256 price;
         uint256 start;
+        uint256 maxDuration;
     }
 
     event Register(
@@ -80,13 +81,18 @@ contract Zarim {
         msg.sender.transfer(amount);
     }
 
-    function initiateSession(uint8 _language, uint256 _price) public {
+    function initiateSession(
+        uint8 _language,
+        uint256 _price,
+        uint256 _duration
+    ) public {
         require(balanceOf[msg.sender] > 0, "Learner has no balance");
         Session memory session = Session({
             speaker: address(0x0),
             language: _language,
             price: _price,
-            start: 0
+            start: 0,
+            maxDuration: _duration
         });
 
         sessions[msg.sender] = session;
