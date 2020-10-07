@@ -104,20 +104,21 @@ contract Zarim {
         emit AcceptSession(_learner, msg.sender);
     }
 
-    // function terminateSession(address _learner, uint256 _duration) public {
-    //     require(
-    //         msg.sender == _learner || msg.sender == _speaker,
-    //         "Only learner or speaker can terminate session"
-    //     );
-    //     Session memory session = sessions[_learner];
+    function terminateSession(address _learner, uint256 _duration) public {
+        Session memory session = sessions[_learner];
 
-    //     // charge learner for session
-    //     uint256 total = session.price * _duration;
-    //     balanceOf[_learner] -= total;
-    //     balanceOf[_speaker] += total;
+        require(
+            msg.sender == _learner || msg.sender == session.speaker,
+            "Only learner or speaker can terminate session"
+        );
 
-    //     delete sessions[_learner];
+        // charge learner for session
+        uint256 total = session.price * _duration;
+        balanceOf[_learner] -= total;
+        balanceOf[session.speaker] += total;
 
-    //     emit TerminateSession(_learner, _speaker, total);
-    // }
+        delete sessions[_learner];
+
+        emit TerminateSession(_learner, session.speaker, total);
+    }
 }

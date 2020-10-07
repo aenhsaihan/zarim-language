@@ -228,16 +228,16 @@ contract("Zarim", (accounts) => {
     });
   });
 
-  // describe("terminating the session", async () => {
-  //   const duration = 60;
+  describe("terminating the session", async () => {
+    const duration = 60;
 
-  //   it("should prevent unknown termination", async () => {
-  //     await expectRevert(
-  //       zarimInstance.terminateSession(language, price, {
-  //         from: unregisteredSpeaker,
-  //       }),
-  //       "Learner has no balance"
-  //     );
-  //   });
-  // });
+    it("should prevent unknown termination", async () => {
+      await expectRevert(
+        zarimInstance.terminateSession(learner, duration, {
+          from: unregisteredSpeaker,
+        }),
+        "Only learner or speaker can terminate session"
+      );
+    });
+  });
 });
