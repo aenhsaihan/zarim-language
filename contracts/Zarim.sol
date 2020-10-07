@@ -39,6 +39,7 @@ contract Zarim {
     event TerminateSession(
         address indexed _learner,
         address indexed _speaker,
+        uint256 _duration,
         uint256 indexed _total
     );
 
@@ -129,6 +130,6 @@ contract Zarim {
 
         delete sessions[_learner];
 
-        emit TerminateSession(_learner, session.speaker, total);
+        emit TerminateSession(_learner, session.speaker, duration, total);
     }
 }
