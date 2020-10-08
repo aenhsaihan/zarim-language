@@ -1,7 +1,6 @@
 const Zarim = artifacts.require("./Zarim.sol");
 
-const { expectRevert } = require("@openzeppelin/test-helpers");
-const { web3 } = require("@openzeppelin/test-helpers/src/setup");
+const { expectRevert, time, BN } = require("@openzeppelin/test-helpers");
 
 require("chai").use(require("chai-as-promised")).should();
 
@@ -236,14 +235,42 @@ contract("Zarim", (accounts) => {
   });
 
   describe("terminating the session", async () => {
-    const duration = 60;
-
     it("should prevent unknown termination", async () => {
       await expectRevert(
         zarimInstance.terminateSession(learner, {
           from: unregisteredSpeaker,
         }),
         "Only learner or speaker can terminate session"
+      );
+    });
+
+    it("should lower learner's balance and increase speaker's balance upon termination by learner", async () => {
+      const learnerPreviousBalance = await zarimInstance.balanceOf.call(
+        learner
+      );
+      const speakerPreviousBalance = await zarimInstance.balanceOf.call(
+        englishSpeaker
+      );
+
+      // call is in session
+      const startingBlock = await time.latestBlock();
+      const endBlock = startingBlock.addn(30);
+      await time.advanceBlockTo(endBlock);
+
+      const receipt = await zarimInstance.terminateSession(learner, {
+        from: learner,
+      });
+
+      const learnerCurrentBalance = await zarimInstance.balanceOf.call(learner);
+      const speakerCurrentBalance = await zarimInstance.balanceOf.call(
+        englishSpeaker
+      );
+
+      BN(learnerCurrentBalance).should.be.bignumber.lt(
+        BN(learnerPreviousBalance)
+      );
+      BN(speakerCurrentBalance).should.be.bignumber.gt(
+        BN(speakerPreviousBalance)
       );
     });
   });
