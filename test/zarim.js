@@ -182,20 +182,20 @@ contract("Zarim", (accounts) => {
 
   describe("initiating the session", async () => {
     const language = Language.ENGLISH;
-    const price = 100;
-    const duration = 60;
+    const deposit = 100;
+    const price = 1;
+    const duration = 100;
 
-    it("prevent session if there is no balance", async () => {
+    it("prevent session if balance is insufficient", async () => {
       await expectRevert(
         zarimInstance.initiateSession(language, price, duration, {
           from: learner,
         }),
-        "Learner has no balance"
+        "Insufficient balance"
       );
     });
 
     it("should track the session", async () => {
-      const deposit = 100;
       await zarimInstance.deposit({ from: learner, value: deposit });
 
       const receipt = await zarimInstance.initiateSession(

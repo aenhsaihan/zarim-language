@@ -91,7 +91,10 @@ contract Zarim {
         uint256 _price,
         uint256 _duration
     ) public {
-        require(balanceOf[msg.sender] > 0, "Learner has no balance");
+        require(
+            balanceOf[msg.sender] >= _price.mul(_duration),
+            "Insufficient balance"
+        );
         Session memory session = Session({
             speaker: address(0x0),
             language: _language,
