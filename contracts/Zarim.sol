@@ -1,7 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.4.21 <0.7.0;
 
+import "@openzeppelin/contracts/math/SafeMath.sol";
+
 contract Zarim {
+    using SafeMath for uint256;
+
     mapping(address => Speaker) public speakers;
     mapping(uint8 => address[]) public nativeSpeakers;
     mapping(address => uint256) public balanceOf;
@@ -73,7 +77,7 @@ contract Zarim {
     }
 
     function deposit() public payable {
-        balanceOf[msg.sender] += msg.value;
+        balanceOf[msg.sender] = balanceOf[msg.sender].add(msg.value);
     }
 
     function withdraw() public {
@@ -123,10 +127,10 @@ contract Zarim {
         );
 
         // charge learner for session
-        uint256 duration = block.timestamp - session.start;
-        uint256 total = session.price * duration;
-        balanceOf[_learner] -= total;
-        balanceOf[session.speaker] += total;
+        uint256 duration = block.timestamp.sub(session.start);
+        uint256 total = session.price.mul(duration);
+        balanceOf[_learner] = balanceOf[_learner].sub(total);
+        balanceOf[session.speaker] = balanceOf[session.speaker].add(total);
 
         delete sessions[_learner];
 
