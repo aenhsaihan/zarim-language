@@ -180,7 +180,7 @@ contract("Zarim", (accounts) => {
     });
   });
 
-  describe("initiating the session", async () => {
+  describe("opening the session", async () => {
     const language = Language.ENGLISH;
     const deposit = 100;
     const price = 1;
@@ -188,7 +188,7 @@ contract("Zarim", (accounts) => {
 
     it("prevent session if balance is insufficient", async () => {
       await expectRevert(
-        zarimInstance.initiateSession(language, price, duration, {
+        zarimInstance.openSession(language, price, duration, {
           from: learner,
         }),
         "Insufficient balance"
@@ -198,7 +198,7 @@ contract("Zarim", (accounts) => {
     it("should track the session", async () => {
       await zarimInstance.deposit({ from: learner, value: deposit });
 
-      const receipt = await zarimInstance.initiateSession(
+      const receipt = await zarimInstance.openSession(
         language,
         price,
         duration,
@@ -215,7 +215,7 @@ contract("Zarim", (accounts) => {
 
     it("should prevent learner from opening a second concurrent session", async () => {
       await expectRevert(
-        zarimInstance.initiateSession(language, price, duration, {
+        zarimInstance.openSession(language, price, duration, {
           from: learner,
         }),
         "Learner has an open session"
@@ -296,7 +296,7 @@ contract("Zarim", (accounts) => {
         learner
       );
 
-      const receipt = await zarimInstance.initiateSession(
+      const receipt = await zarimInstance.openSession(
         language,
         price,
         duration,

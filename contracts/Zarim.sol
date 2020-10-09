@@ -33,7 +33,7 @@ contract Zarim {
         uint8[] indexed _languages
     );
 
-    event InitiateSession(
+    event OpenSession(
         address indexed _learner,
         uint8 indexed _language,
         uint256 indexed _price
@@ -92,7 +92,7 @@ contract Zarim {
         msg.sender.transfer(amount);
     }
 
-    function initiateSession(
+    function openSession(
         uint8 _language,
         uint256 _price,
         uint256 _duration
@@ -112,7 +112,7 @@ contract Zarim {
 
         sessions[msg.sender] = session;
 
-        emit InitiateSession(msg.sender, _language, _price);
+        emit OpenSession(msg.sender, _language, _price);
     }
 
     function acceptSession(address _learner) public {
