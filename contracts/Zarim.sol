@@ -136,11 +136,15 @@ contract Zarim {
             "Only learner or speaker can terminate session"
         );
 
-        // charge learner for session
-        uint256 duration = block.timestamp.sub(session.start);
-        uint256 total = session.price.mul(duration);
-        balanceOf[_learner] = balanceOf[_learner].sub(total);
-        balanceOf[session.speaker] = balanceOf[session.speaker].add(total);
+        // charge learner for session with a speaker
+        uint256 duration;
+        uint256 total;
+        if (session.speaker != address(0x0)) {
+            duration = block.timestamp.sub(session.start);
+            total = session.price.mul(duration);
+            balanceOf[_learner] = balanceOf[_learner].sub(total);
+            balanceOf[session.speaker] = balanceOf[session.speaker].add(total);
+        }
 
         delete sessions[_learner];
 

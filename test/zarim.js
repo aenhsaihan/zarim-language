@@ -244,6 +244,12 @@ contract("Zarim", (accounts) => {
   });
 
   describe("terminating the session", async () => {
+    const language = Language.ENGLISH;
+    const deposit = 100;
+    const price = 1;
+    const duration = 100;
+    const blockTime = 30;
+
     it("should prevent unknown termination", async () => {
       await expectRevert(
         zarimInstance.terminateSession(learner, {
@@ -263,7 +269,7 @@ contract("Zarim", (accounts) => {
 
       // call is in session
       const startingBlock = await time.latestBlock();
-      const endBlock = startingBlock.addn(30);
+      const endBlock = startingBlock.addn(blockTime);
       await time.advanceBlockTo(endBlock);
 
       const receipt = await zarimInstance.terminateSession(learner, {
@@ -280,6 +286,37 @@ contract("Zarim", (accounts) => {
       );
       BN(speakerCurrentBalance).should.be.bignumber.gt(
         BN(speakerPreviousBalance)
+      );
+    });
+
+    it("should not charge learner for an open session that had no speaker", async () => {
+      await zarimInstance.deposit({ from: learner, value: deposit });
+
+      const learnerPreviousBalance = await zarimInstance.balanceOf.call(
+        learner
+      );
+
+      const receipt = await zarimInstance.initiateSession(
+        language,
+        price,
+        duration,
+        {
+          from: learner,
+        }
+      );
+
+      // call is in session
+      const startingBlock = await time.latestBlock();
+      const endBlock = startingBlock.addn(blockTime);
+      await time.advanceBlockTo(endBlock);
+
+      await zarimInstance.terminateSession(learner, {
+        from: learner,
+      });
+
+      const learnerCurrentBalance = await zarimInstance.balanceOf.call(learner);
+      BN(learnerCurrentBalance).should.be.bignumber.equal(
+        BN(learnerPreviousBalance)
       );
     });
   });
