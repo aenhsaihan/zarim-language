@@ -39,7 +39,7 @@ contract Zarim {
         uint256 indexed _price
     );
 
-    event AcceptSession(address indexed _learner, address indexed _speaker);
+    event EnterSession(address indexed _learner, address indexed _speaker);
 
     event TerminateSession(
         address indexed _learner,
@@ -115,7 +115,7 @@ contract Zarim {
         emit OpenSession(msg.sender, _language, _price);
     }
 
-    function acceptSession(address _learner) public {
+    function enterSession(address _learner) public {
         require(
             speakers[msg.sender].id == msg.sender,
             "Speaker is not registered"
@@ -125,7 +125,7 @@ contract Zarim {
         session.speaker = msg.sender;
         session.start = block.timestamp;
 
-        emit AcceptSession(_learner, msg.sender);
+        emit EnterSession(_learner, msg.sender);
     }
 
     function terminateSession(address _learner) public {

@@ -223,18 +223,18 @@ contract("Zarim", (accounts) => {
     });
   });
 
-  describe("accepting the session", async () => {
-    it("should not allow unregistered speakers to accept session", async () => {
+  describe("enter session", async () => {
+    it("should not allow unregistered speakers to enter session", async () => {
       await expectRevert(
-        zarimInstance.acceptSession(learner, {
+        zarimInstance.enterSession(learner, {
           from: unregisteredSpeaker,
         }),
         "Speaker is not registered"
       );
     });
 
-    it("should allow registered speaker to accept session", async () => {
-      const receipt = await zarimInstance.acceptSession(learner, {
+    it("should allow registered speaker to enter session", async () => {
+      const receipt = await zarimInstance.enterSession(learner, {
         from: englishSpeaker,
       });
 
