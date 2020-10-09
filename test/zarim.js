@@ -248,7 +248,7 @@ contract("Zarim", (accounts) => {
     const deposit = 100;
     const price = 1;
     const duration = 100;
-    const blockTime = 30;
+    const blockTime = 50;
 
     it("should prevent unknown termination", async () => {
       await expectRevert(
@@ -259,7 +259,7 @@ contract("Zarim", (accounts) => {
       );
     });
 
-    it("should lower learner's balance and increase speaker's balance upon termination by learner", async () => {
+    it("should lower learner's balance and increase speaker's balance upon termination by speaker", async () => {
       const learnerPreviousBalance = await zarimInstance.balanceOf.call(
         learner
       );
@@ -273,7 +273,7 @@ contract("Zarim", (accounts) => {
       await time.advanceBlockTo(endBlock);
 
       const receipt = await zarimInstance.terminateSession(learner, {
-        from: learner,
+        from: englishSpeaker,
       });
 
       const learnerCurrentBalance = await zarimInstance.balanceOf.call(learner);
@@ -289,7 +289,7 @@ contract("Zarim", (accounts) => {
       );
     });
 
-    it("should not charge learner for an open session that had no speaker", async () => {
+    it("should not charge learner for closing an open session that had no speaker", async () => {
       await zarimInstance.deposit({ from: learner, value: deposit });
 
       const learnerPreviousBalance = await zarimInstance.balanceOf.call(
