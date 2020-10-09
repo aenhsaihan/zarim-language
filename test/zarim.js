@@ -212,6 +212,15 @@ contract("Zarim", (accounts) => {
       session.price.toNumber().should.equal(price);
       session.maxDuration.toNumber().should.equal(duration);
     });
+
+    it("should prevent learner from opening a second concurrent session", async () => {
+      await expectRevert(
+        zarimInstance.initiateSession(language, price, duration, {
+          from: learner,
+        }),
+        "Learner has an open session"
+      );
+    });
   });
 
   describe("accepting the session", async () => {

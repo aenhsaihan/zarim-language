@@ -24,6 +24,7 @@ contract Zarim {
         uint256 price;
         uint256 start;
         uint256 maxDuration;
+        bool open;
     }
 
     event Register(
@@ -46,6 +47,11 @@ contract Zarim {
         uint256 _duration,
         uint256 indexed _total
     );
+
+    modifier noOpenSession() {
+        require(!sessions[msg.sender].open, "Learner has an open session");
+        _;
+    }
 
     function registerSpeaker(
         uint8 _age,
@@ -90,7 +96,7 @@ contract Zarim {
         uint8 _language,
         uint256 _price,
         uint256 _duration
-    ) public {
+    ) public noOpenSession {
         require(
             balanceOf[msg.sender] >= _price.mul(_duration),
             "Insufficient balance"
@@ -100,7 +106,8 @@ contract Zarim {
             language: _language,
             price: _price,
             start: 0,
-            maxDuration: _duration
+            maxDuration: _duration,
+            open: true
         });
 
         sessions[msg.sender] = session;
