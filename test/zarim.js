@@ -243,23 +243,23 @@ contract("Zarim", (accounts) => {
     });
   });
 
-  describe("terminating the session", async () => {
+  describe("closing the session", async () => {
     const language = Language.ENGLISH;
     const deposit = 100;
     const price = 1;
     const duration = 100;
     const blockTime = 50;
 
-    it("should prevent unknown termination", async () => {
+    it("should prevent unknown closing of session", async () => {
       await expectRevert(
-        zarimInstance.terminateSession(learner, {
+        zarimInstance.closeSession(learner, {
           from: unregisteredSpeaker,
         }),
-        "Only learner or speaker can terminate session"
+        "Only learner or speaker can close session"
       );
     });
 
-    it("should lower learner's balance and increase speaker's balance upon termination by speaker", async () => {
+    it("should lower learner's balance and increase speaker's balance upon session closure by speaker", async () => {
       const learnerPreviousBalance = await zarimInstance.balanceOf.call(
         learner
       );
@@ -272,7 +272,7 @@ contract("Zarim", (accounts) => {
       const endBlock = startingBlock.addn(blockTime);
       await time.advanceBlockTo(endBlock);
 
-      const receipt = await zarimInstance.terminateSession(learner, {
+      const receipt = await zarimInstance.closeSession(learner, {
         from: englishSpeaker,
       });
 
@@ -310,7 +310,7 @@ contract("Zarim", (accounts) => {
       const endBlock = startingBlock.addn(blockTime);
       await time.advanceBlockTo(endBlock);
 
-      await zarimInstance.terminateSession(learner, {
+      await zarimInstance.closeSession(learner, {
         from: learner,
       });
 

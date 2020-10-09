@@ -41,7 +41,7 @@ contract Zarim {
 
     event EnterSession(address indexed _learner, address indexed _speaker);
 
-    event TerminateSession(
+    event CloseSession(
         address indexed _learner,
         address indexed _speaker,
         uint256 _duration,
@@ -128,12 +128,12 @@ contract Zarim {
         emit EnterSession(_learner, msg.sender);
     }
 
-    function terminateSession(address _learner) public {
+    function closeSession(address _learner) public {
         Session memory session = sessions[_learner];
 
         require(
             msg.sender == _learner || msg.sender == session.speaker,
-            "Only learner or speaker can terminate session"
+            "Only learner or speaker can close session"
         );
 
         // charge learner for session with a speaker
@@ -148,6 +148,6 @@ contract Zarim {
 
         delete sessions[_learner];
 
-        emit TerminateSession(_learner, session.speaker, duration, total);
+        emit CloseSession(_learner, session.speaker, duration, total);
     }
 }
