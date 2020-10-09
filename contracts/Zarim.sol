@@ -10,6 +10,7 @@ contract Zarim {
     mapping(uint8 => address[]) public nativeSpeakers;
     mapping(address => uint256) public balanceOf;
     mapping(address => Session) public sessions;
+    mapping(address => Session[]) public closedSessions;
 
     struct Speaker {
         address id;
@@ -146,8 +147,15 @@ contract Zarim {
             balanceOf[session.speaker] = balanceOf[session.speaker].add(total);
         }
 
+        session.open = false;
+        closedSessions[_learner].push(session);
+
         delete sessions[_learner];
 
         emit CloseSession(_learner, session.speaker, duration, total);
+    }
+
+    function getClosedSessionsCount(address _learner) public returns (uint256) {
+        return closedSessions[_learner].length;
     }
 }

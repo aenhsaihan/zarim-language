@@ -319,5 +319,13 @@ contract("Zarim", (accounts) => {
         BN(learnerPreviousBalance)
       );
     });
+
+    it("should have two closed sessions", async () => {
+      const closedSessionsCount = await zarimInstance.getClosedSessionsCount.call(
+        learner
+      );
+
+      closedSessionsCount.toNumber().should.be.equal(2);
+    });
   });
 });
