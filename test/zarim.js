@@ -298,6 +298,15 @@ contract("Zarim", (accounts) => {
       );
     });
 
+    it("should not allow registered speaker to enter closed session", async () => {
+      await expectRevert(
+        zarimInstance.enterSession(learner, {
+          from: englishSpeaker,
+        }),
+        "Learner has no open session"
+      );
+    });
+
     it("should not charge learner for closing an open session that had no speaker", async () => {
       await zarimInstance.deposit({ from: learner, value: deposit });
 

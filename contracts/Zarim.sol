@@ -121,7 +121,7 @@ contract Zarim {
         emit OpenSession(msg.sender, _language, _price);
     }
 
-    function enterSession(address _learner) public {
+    function enterSession(address _learner) public hasOpenSession(_learner) {
         require(
             speakers[msg.sender].id == msg.sender,
             "Speaker is not registered"
