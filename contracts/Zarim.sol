@@ -160,7 +160,11 @@ contract Zarim {
         emit CloseSession(_learner, session.speaker, duration, total);
     }
 
-    function getClosedSessionsCount(address _learner) public returns (uint256) {
+    function getClosedSessionsCount(address _learner)
+        public
+        view
+        returns (uint256)
+    {
         return closedSessions[_learner].length;
     }
 }
