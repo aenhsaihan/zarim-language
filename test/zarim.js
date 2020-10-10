@@ -250,12 +250,21 @@ contract("Zarim", (accounts) => {
     const duration = 100;
     const blockTime = 50;
 
-    it("should prevent unknown closing of session", async () => {
+    it("should prevent unknown party closing the session", async () => {
       await expectRevert(
         zarimInstance.closeSession(learner, {
           from: unregisteredSpeaker,
         }),
         "Only learner or speaker can close session"
+      );
+    });
+
+    it("should prevent closing a session that was never opened", async () => {
+      await expectRevert(
+        zarimInstance.closeSession(unregisteredSpeaker, {
+          from: unregisteredSpeaker,
+        }),
+        "Learner has no open session"
       );
     });
 

@@ -49,6 +49,11 @@ contract Zarim {
         uint256 indexed _total
     );
 
+    modifier hasOpenSession(address _learner) {
+        require(sessions[_learner].open, "Learner has no open session");
+        _;
+    }
+
     modifier noOpenSession() {
         require(!sessions[msg.sender].open, "Learner has an open session");
         _;
@@ -129,7 +134,7 @@ contract Zarim {
         emit EnterSession(_learner, msg.sender);
     }
 
-    function closeSession(address _learner) public {
+    function closeSession(address _learner) public hasOpenSession(_learner) {
         Session memory session = sessions[_learner];
 
         require(
