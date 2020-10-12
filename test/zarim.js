@@ -26,6 +26,7 @@ contract("Zarim", (accounts) => {
   const [
     englishSpeaker,
     multilingualSpeaker,
+    russianSpeaker,
     unregisteredSpeaker,
     learner,
   ] = accounts;
@@ -48,7 +49,15 @@ contract("Zarim", (accounts) => {
     account: multilingualSpeaker,
   };
 
-  beforeEach(async () => {
+  const russianSpeakerProfile = {
+    age: 21,
+    gender: Gender.FEMALE,
+    country: Country.RUSSIA,
+    language: [Language.RUSSIAN],
+    account: russianSpeaker,
+  };
+
+  before(async () => {
     zarimInstance = await Zarim.deployed();
   });
 
@@ -148,6 +157,29 @@ contract("Zarim", (accounts) => {
         Language.RUSSIAN
       );
       russianSpeakersCount.toNumber().should.equal(1);
+    });
+  });
+
+  describe("registration of native Russian speaker", async () => {
+    before(async () => {
+      const { age, gender, country, language } = russianSpeakerProfile;
+
+      const receipt = await zarimInstance.registerSpeaker(
+        age,
+        gender,
+        country,
+        language,
+        {
+          from: russianSpeaker,
+        }
+      );
+    });
+
+    it("should have two native Russian speakers after registration", async () => {
+      let russianSpeakersCount = await zarimInstance.getSpeakersCount.call(
+        Language.RUSSIAN
+      );
+      russianSpeakersCount.toNumber().should.equal(2);
     });
   });
 
