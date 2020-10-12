@@ -8,6 +8,7 @@ const Language = {
   ENGLISH: 0,
   RUSSIAN: 1,
   JAPANESE: 2,
+  SPANISH: 3,
 };
 
 const Gender = {
@@ -136,6 +137,31 @@ contract("Zarim", (accounts) => {
           from: multilingualSpeaker,
         }
       );
+
+      const isEnglishNative = await zarimInstance.isNative.call(
+        multilingualSpeaker,
+        Language.ENGLISH
+      );
+
+      const isRussianNative = await zarimInstance.isNative.call(
+        multilingualSpeaker,
+        Language.RUSSIAN
+      );
+
+      const isJapaneseNative = await zarimInstance.isNative.call(
+        multilingualSpeaker,
+        Language.JAPANESE
+      );
+
+      const isSpanishNative = await zarimInstance.isNative.call(
+        multilingualSpeaker,
+        Language.SPANISH
+      );
+
+      isEnglishNative.should.be.true;
+      isRussianNative.should.be.true;
+      isJapaneseNative.should.be.true;
+      isSpanishNative.should.be.false;
     });
 
     it("should have two native English speakers after registration", async () => {
@@ -262,6 +288,15 @@ contract("Zarim", (accounts) => {
           from: unregisteredSpeaker,
         }),
         "Speaker is not registered"
+      );
+    });
+
+    it("should not allow non-native speakers to enter session", async () => {
+      await expectRevert(
+        zarimInstance.enterSession(learner, {
+          from: russianSpeaker,
+        }),
+        "Speaker is not native"
       );
     });
 

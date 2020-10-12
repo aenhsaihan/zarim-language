@@ -8,6 +8,7 @@ contract Zarim {
 
     mapping(address => Speaker) public speakers;
     mapping(uint8 => address[]) public nativeSpeakers;
+    mapping(address => mapping(uint8 => bool)) public isNative;
     mapping(address => uint256) public balanceOf;
     mapping(address => Session) public sessions;
     mapping(address => Session[]) public closedSessions;
@@ -69,16 +70,18 @@ contract Zarim {
             speakers[msg.sender].id == address(0x0),
             "Speaker is already registered"
         );
-        Speaker memory speaker = Speaker({
+
+        speakers[msg.sender] = Speaker({
             id: msg.sender,
             age: _age,
             gender: _gender,
             country: _country
         });
-        speakers[msg.sender] = speaker;
 
         for (uint8 i = 0; i < _languages.length; i++) {
-            nativeSpeakers[_languages[i]].push(msg.sender);
+            uint8 language = _languages[i];
+            nativeSpeakers[language].push(msg.sender);
+            isNative[msg.sender][language] = true;
         }
 
         emit Register(msg.sender, _country, _languages);
@@ -128,6 +131,10 @@ contract Zarim {
         );
 
         Session storage session = sessions[_learner];
+        require(
+            isNative[msg.sender][session.language] == true,
+            "Speaker is not native"
+        );
         session.speaker = msg.sender;
         session.start = block.timestamp;
 
