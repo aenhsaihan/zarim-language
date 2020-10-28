@@ -1,3 +1,4 @@
+const videoGrid = document.getElementById("video-grid");
 const myVideo = document.createElement("video");
 myVideo.muted = true; // mute my own video
 
@@ -14,7 +15,8 @@ navigator.mediaDevices
 
 const addVideoStream = (video, stream) => {
   video.srcObject = stream;
-  video.addEventListener("loadmetadata", () => {
+  video.addEventListener("loadedmetadata", () => {
     video.play();
   });
+  videoGrid.append(video);
 };
