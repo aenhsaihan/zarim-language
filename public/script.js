@@ -22,16 +22,15 @@ navigator.mediaDevices
   });
 
 peer.on("open", (id) => {
-  console.log(id);
-});
-socket.emit("join-room", ROOM_ID);
-
-socket.on("user-connected", () => {
-  connectToNewUser();
+  socket.emit("join-room", ROOM_ID, id);
 });
 
-const connectToNewUser = () => {
-  console.log("new user");
+socket.on("user-connected", (userId) => {
+  connectToNewUser(userId);
+});
+
+const connectToNewUser = (userId) => {
+  console.log(userId);
 };
 
 const addVideoStream = (video, stream) => {
