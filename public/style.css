@@ -58,3 +58,7 @@ video {
   min-width: 80px;
   cursor: pointer;
 }
+
+.main__controls__button i {
+  font-size: 24px;
+}
