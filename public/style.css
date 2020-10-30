@@ -62,3 +62,7 @@ video {
 .main__controls__button i {
   font-size: 24px;
 }
+
+.leave_meeting {
+  color: #eb534b;
+}
