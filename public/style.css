@@ -63,6 +63,11 @@ video {
   font-size: 24px;
 }
 
+.main__controls__button:hover {
+  background-color: #343434;
+  border-radius: 5px;
+}
+
 .leave_meeting {
   color: #eb534b;
 }
