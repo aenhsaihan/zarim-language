@@ -8,7 +8,7 @@ module.exports = {
       version: "^0.6.0",
     },
   },
-  contracts_build_directory: path.join(__dirname, "client/src/contracts"),
+  contracts_build_directory: path.join(__dirname, "client/ethereum/build"),
   networks: {
     develop: {
       port: 8545,
