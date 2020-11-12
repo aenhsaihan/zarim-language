@@ -1,7 +1,7 @@
 import Zarim from "../ethereum/build/Zarim.json";
 import getWeb3 from "../ethereum/getWeb3";
 
-const retrieveInstance = async () => {
+const instance = async () => {
   try {
     // Get network provider and web3 instance.
     const web3 = await getWeb3();
@@ -27,6 +27,4 @@ const retrieveInstance = async () => {
   }
 };
 
-const instance = retrieveInstance();
-
-export default instance;
+export default instance();
