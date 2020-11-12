@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "next": "^4.1.4",
+    "next": "^10.0.1",
     "react": "16.11.0",
     "react-dom": "16.11.0",
     "react-scripts": "3.2.0",
@@ -14,7 +14,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "dev": "next dev"
+    "dev": "NODE_OPTIONS='--inspect' next dev"
   },
   "eslintConfig": {
     "extends": "react-app"
