@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Card } from "semantic-ui-react";
+import { Card, Button } from "semantic-ui-react";
 import zarim from "../ethereum/zarim";
 import "semantic-ui-css/semantic.min.css";
 
@@ -24,11 +24,8 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <h1>Good to Go!!!</h1>
-        <p>Your Truffle Box is installed and ready.</p>
-        <h2>Smart Contract Example</h2>
-        <div>The stored value is: {this.props.speakersCount}</div>
         <div>{this.renderNativeSpeakers()}</div>
+        <Button content="Register" icon="add circle" primary />
       </div>
     );
   }
