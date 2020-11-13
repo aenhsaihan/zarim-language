@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Card } from "semantic-ui-react";
 import zarim from "../ethereum/zarim";
+import "semantic-ui-css/semantic.min.css";
 
 class App extends Component {
   static async getInitialProps() {
