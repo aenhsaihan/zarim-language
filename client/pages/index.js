@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Card, Button } from "semantic-ui-react";
 import zarim from "../ethereum/zarim";
-import "semantic-ui-css/semantic.min.css";
 import Layout from "../components/Layout";
 
 class App extends Component {

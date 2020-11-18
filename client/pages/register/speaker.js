@@ -1,8 +1,13 @@
 import React, { Component } from "react";
+import Layout from "../../components/Layout";
 
 class RegisterSpeaker extends Component {
   render() {
-    return <h1>Registration of new speaker</h1>;
+    return (
+      <Layout>
+        <h1>Registration of new speaker</h1>
+      </Layout>
+    );
   }
 }
 
