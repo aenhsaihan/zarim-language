@@ -33,7 +33,7 @@ class RegisterSpeaker extends Component {
   onSubmit = async (event) => {
     event.preventDefault();
 
-    this.setState({ loading: true });
+    this.setState({ loading: true, errorMessage: "" });
 
     const [account] = this.state.accounts;
 
