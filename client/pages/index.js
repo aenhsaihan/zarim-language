@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Card, Button } from "semantic-ui-react";
 import zarim from "../ethereum/zarim";
 import "semantic-ui-css/semantic.min.css";
+import Layout from "../components/Layout";
 
 class App extends Component {
   static async getInitialProps() {
@@ -23,10 +24,13 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <div>{this.renderNativeSpeakers()}</div>
-        <Button content="Register" icon="add circle" primary />
-      </div>
+      <Layout>
+        <div className="App">
+          <h3>Open Sessions</h3>
+          <div>{this.renderNativeSpeakers()}</div>
+          <Button content="Register" icon="add circle" primary />
+        </div>
+      </Layout>
     );
   }
 }
