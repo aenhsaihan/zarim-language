@@ -48,7 +48,7 @@ class RegisterSpeaker extends Component {
       <Layout>
         <h3>Register new speaker</h3>
 
-        <Form onSubmit={this.onSubmit}>
+        <Form onSubmit={this.onSubmit} error={!!this.state.errorMessage}>
           <Form.Field>
             <label>Age</label>
             <input
