@@ -3,6 +3,10 @@ import { Form, Button } from "semantic-ui-react";
 import Layout from "../../components/Layout";
 
 class RegisterSpeaker extends Component {
+  state = {
+    age: "",
+  };
+
   render() {
     return (
       <Layout>
@@ -11,7 +15,10 @@ class RegisterSpeaker extends Component {
         <Form>
           <Form.Field>
             <label>Age</label>
-            <input />
+            <input
+              value={this.state.age}
+              onChange={(event) => this.setState({ age: event.target.value })}
+            />
           </Form.Field>
 
           <Form.Field>
