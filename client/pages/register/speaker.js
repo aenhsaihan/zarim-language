@@ -14,6 +14,7 @@ class RegisterSpeaker extends Component {
     web3: null,
     accounts: null,
     contract: null,
+    loading: false,
   };
 
   componentDidMount = async () => {
@@ -32,6 +33,8 @@ class RegisterSpeaker extends Component {
   onSubmit = async (event) => {
     event.preventDefault();
 
+    this.setState({ loading: true });
+
     const [account] = this.state.accounts;
 
     try {
@@ -40,6 +43,8 @@ class RegisterSpeaker extends Component {
         .send({ from: account });
     } catch (err) {
       this.setState({ errorMessage: err.message });
+    } finally {
+      this.setState({ loading: false });
     }
   };
 
@@ -88,7 +93,9 @@ class RegisterSpeaker extends Component {
           </Form.Field>
 
           <Message error header="Oops!" content={this.state.errorMessage} />
-          <Button primary>Register</Button>
+          <Button loading={this.state.loading} primary>
+            Register
+          </Button>
         </Form>
       </Layout>
     );
