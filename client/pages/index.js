@@ -27,8 +27,15 @@ class App extends Component {
       <Layout>
         <div className="App">
           <h3>Open Sessions</h3>
-          <div>{this.renderNativeSpeakers()}</div>
-          <Button content="Register" icon="add circle" primary />
+
+          <Button
+            floated="right"
+            content="Register"
+            icon="add circle"
+            primary
+          />
+
+          {this.renderNativeSpeakers()}
         </div>
       </Layout>
     );
