@@ -1,6 +1,8 @@
 import React, { Component } from "react";
-import { Form, Button } from "semantic-ui-react";
+import { Form, Button, Message } from "semantic-ui-react";
 import Layout from "../../components/Layout";
+import zarim from "../../ethereum/zarim";
+import getWeb3 from "../../ethereum/getWeb3";
 
 class RegisterSpeaker extends Component {
   state = {
@@ -8,6 +10,37 @@ class RegisterSpeaker extends Component {
     gender: "",
     country: "",
     languages: "",
+    errorMessage: "",
+    web3: null,
+    accounts: null,
+    contract: null,
+  };
+
+  componentDidMount = async () => {
+    try {
+      const web3 = await getWeb3();
+      const accounts = await web3.eth.getAccounts();
+      const contract = await zarim;
+
+      this.setState({ web3, accounts, contract });
+    } catch (err) {
+      // Catch any errors for any of the above operations.
+      this.setState({ errorMessage: err.message });
+    }
+  };
+
+  onSubmit = async (event) => {
+    event.preventDefault();
+
+    const [account] = this.state.accounts;
+
+    try {
+      await this.state.contract.methods
+        .registerSpeaker(0, 0, 0, [0])
+        .send({ from: account });
+    } catch (err) {
+      this.setState({ errorMessage: err.message });
+    }
   };
 
   render() {
@@ -15,7 +48,7 @@ class RegisterSpeaker extends Component {
       <Layout>
         <h3>Register new speaker</h3>
 
-        <Form>
+        <Form onSubmit={this.onSubmit}>
           <Form.Field>
             <label>Age</label>
             <input
@@ -54,6 +87,7 @@ class RegisterSpeaker extends Component {
             />
           </Form.Field>
 
+          <Message error header="Oops!" content={this.state.errorMessage} />
           <Button primary>Register</Button>
         </Form>
       </Layout>
