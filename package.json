@@ -15,6 +15,7 @@
     "lodash": "^4.17.20",
     "peer": "^0.5.3",
     "socket.io": "^2.3.0",
+    "truffle-hdwallet-provider": "^1.0.17",
     "uuid": "^8.3.1"
   },
   "devDependencies": {

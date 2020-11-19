@@ -3,6 +3,7 @@ import { Form, Button, Message } from "semantic-ui-react";
 import Layout from "../../components/Layout";
 import zarim from "../../ethereum/zarim";
 import getWeb3 from "../../ethereum/getWeb3";
+import { Router } from "../../routes";
 
 class RegisterSpeaker extends Component {
   state = {
@@ -39,12 +40,15 @@ class RegisterSpeaker extends Component {
 
     try {
       await this.state.contract.methods
-        .registerSpeaker(0, 0, 0, [0])
+        .registerSpeaker(1, 2, 3, [5])
         .send({ from: account });
+
+      Router.pushRoute("/");
     } catch (err) {
       this.setState({ errorMessage: err.message });
     } finally {
       this.setState({ loading: false });
+      Router.pushRoute("/");
     }
   };
 

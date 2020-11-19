@@ -13782,7 +13782,221 @@
     "version": "0.6.12+commit.27d51765.Emscripten.clang"
   },
   "networks": {
+    "3": {
+      "events": {
+        "0x4572d1e81607ba21a7c488ba6b799b85f1da293da60c105da550dc8c91c6a48c": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "_learner",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "_speaker",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "_duration",
+              "type": "uint256"
+            },
+            {
+              "indexed": true,
+              "internalType": "uint256",
+              "name": "_total",
+              "type": "uint256"
+            }
+          ],
+          "name": "CloseSession",
+          "type": "event"
+        },
+        "0x6151675afe34cb8df928dac22e5d90b8b75a05c4fe760689b556ad709f40c615": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "_learner",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "_speaker",
+              "type": "address"
+            }
+          ],
+          "name": "EnterSession",
+          "type": "event"
+        },
+        "0x7cb837bae2005b3e60cc80e56987214ed7272c91d36b20db994b007206907fa7": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "_learner",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "uint8",
+              "name": "_language",
+              "type": "uint8"
+            },
+            {
+              "indexed": true,
+              "internalType": "uint256",
+              "name": "_price",
+              "type": "uint256"
+            }
+          ],
+          "name": "OpenSession",
+          "type": "event"
+        },
+        "0x4db0815e6f238c1c8229bc3da9023043b6d3dea7c5e6f8ecc3c50e8c77dcffb7": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "_speaker",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "uint8",
+              "name": "_country",
+              "type": "uint8"
+            },
+            {
+              "indexed": true,
+              "internalType": "uint8[]",
+              "name": "_languages",
+              "type": "uint8[]"
+            }
+          ],
+          "name": "Register",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x148e06E3DdCc481b891857aBCE7568a3C29BD51f",
+      "transactionHash": "0x8029c150534bdb6c4446d65445ca56c674330bb05c7251b0850123db40bd28b4"
+    },
     "5777": {
+      "events": {
+        "0x4572d1e81607ba21a7c488ba6b799b85f1da293da60c105da550dc8c91c6a48c": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "_learner",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "_speaker",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "_duration",
+              "type": "uint256"
+            },
+            {
+              "indexed": true,
+              "internalType": "uint256",
+              "name": "_total",
+              "type": "uint256"
+            }
+          ],
+          "name": "CloseSession",
+          "type": "event"
+        },
+        "0x6151675afe34cb8df928dac22e5d90b8b75a05c4fe760689b556ad709f40c615": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "_learner",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "_speaker",
+              "type": "address"
+            }
+          ],
+          "name": "EnterSession",
+          "type": "event"
+        },
+        "0x7cb837bae2005b3e60cc80e56987214ed7272c91d36b20db994b007206907fa7": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "_learner",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "uint8",
+              "name": "_language",
+              "type": "uint8"
+            },
+            {
+              "indexed": true,
+              "internalType": "uint256",
+              "name": "_price",
+              "type": "uint256"
+            }
+          ],
+          "name": "OpenSession",
+          "type": "event"
+        },
+        "0x4db0815e6f238c1c8229bc3da9023043b6d3dea7c5e6f8ecc3c50e8c77dcffb7": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "_speaker",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "uint8",
+              "name": "_country",
+              "type": "uint8"
+            },
+            {
+              "indexed": true,
+              "internalType": "uint8[]",
+              "name": "_languages",
+              "type": "uint8[]"
+            }
+          ],
+          "name": "Register",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x148e06E3DdCc481b891857aBCE7568a3C29BD51f",
+      "transactionHash": "0x55bf9e888423979810c31af974a6c3a2c8a77741d77c9c93614c8b9010a742c5"
+    },
+    "5778": {
       "events": {
         "0x4572d1e81607ba21a7c488ba6b799b85f1da293da60c105da550dc8c91c6a48c": {
           "anonymous": false,
@@ -13891,7 +14105,7 @@
     }
   },
   "schemaVersion": "3.0.23",
-  "updatedAt": "2020-11-18T06:30:52.215Z",
+  "updatedAt": "2020-11-19T07:04:55.714Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",

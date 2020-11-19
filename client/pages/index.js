@@ -4,17 +4,29 @@ import zarim from "../ethereum/zarim";
 import Layout from "../components/Layout";
 
 class App extends Component {
-  static async getInitialProps() {
-    const contract = await zarim;
-    const speakersCount = await contract.methods.getSpeakersCount(0).call();
-    const nativeSpeaker = await contract.methods.nativeSpeakers(0, 0).call();
+  state = {
+    contract: null,
+    speakersCount: null,
+    nativeSpekaer: null,
+    errorMessage: null,
+  };
 
-    return { speakersCount, contract, nativeSpeaker };
-  }
+  componentDidMount = async () => {
+    try {
+      const contract = await zarim;
+      const speakersCount = await contract.methods.getSpeakersCount(5).call();
+      const nativeSpeaker = await contract.methods.nativeSpeakers(5, 0).call();
+
+      this.setState({ contract, speakersCount, nativeSpeaker });
+    } catch (err) {
+      // Catch any errors for any of the above operations.
+      this.setState({ errorMessage: err.message });
+    }
+  };
 
   renderNativeSpeakers() {
     const item = {
-      header: this.props.nativeSpeaker,
+      header: this.state.nativeSpeaker,
       description: <a>View speaker</a>,
       fluid: true,
     };
