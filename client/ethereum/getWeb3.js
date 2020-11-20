@@ -1,4 +1,4 @@
-import Web3 from "web3";
+const Web3 = require("web3");
 
 const useLocalProvider = () => {
   const provider = new Web3.providers.HttpProvider("http://127.0.0.1:8545");
@@ -9,38 +9,35 @@ const useLocalProvider = () => {
 
 const getWeb3 = () =>
   new Promise((resolve, reject) => {
-    if (typeof window !== "undefined") {
-      // Wait for loading completion to avoid race conditions with web3 injection timing.
-      window.addEventListener("load", async () => {
-        // Modern dapp browsers...
-        if (window.ethereum) {
-          const web3 = new Web3(window.ethereum);
-          try {
-            // Request account access if needed
-            await window.ethereum.enable();
-            // Acccounts now exposed
-            resolve(web3);
-          } catch (error) {
-            reject(error);
-          }
-        }
-        // Legacy dapp browsers...
-        else if (window.web3) {
-          // Use Mist/MetaMask's provider.
-          const web3 = window.web3;
-          console.log("Injected web3 detected.");
+    // Wait for loading completion to avoid race conditions with web3 injection timing.
+    window.addEventListener("load", async () => {
+      // Modern dapp browsers...
+      if (window.ethereum) {
+        const web3 = new Web3(window.ethereum);
+        try {
+          // Request account access if needed
+          await window.ethereum.enable();
+          // Acccounts now exposed
+
+          console.log("Account access requested...");
           resolve(web3);
+        } catch (error) {
+          reject(error);
         }
-        // Fallback to localhost; use dev console port by default...
-        else {
-          const web3 = useLocalProvider();
-          resolve(web3);
-        }
-      });
-    } else {
-      const web3 = useLocalProvider();
-      resolve(web3);
-    }
+      }
+      // Legacy dapp browsers...
+      else if (window.web3) {
+        // Use Mist/MetaMask's provider.
+        const web3 = window.web3;
+        console.log("Injected web3 detected.");
+        resolve(web3);
+      }
+      // Fallback to localhost; use dev console port by default...
+      else {
+        const web3 = useLocalProvider();
+        resolve(web3);
+      }
+    });
   });
 
 export default getWeb3;

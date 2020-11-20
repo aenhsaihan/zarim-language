@@ -1,11 +1,8 @@
 import Zarim from "../ethereum/build/Zarim.json";
-import getWeb3 from "../ethereum/getWeb3";
+import web3 from "../ethereum/web3";
 
 const instance = async () => {
   try {
-    // Get network provider and web3 instance.
-    const web3 = await getWeb3();
-
     // Use web3 to get the user's accounts.
     const accounts = await web3.eth.getAccounts();
 
@@ -20,7 +17,6 @@ const instance = async () => {
     return instance;
   } catch (error) {
     // Catch any errors for any of the above operations.
-
     console.error(error);
   }
 };

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Form, Button, Message } from "semantic-ui-react";
 import Layout from "../../components/Layout";
 import zarim from "../../ethereum/zarim";
-import getWeb3 from "../../ethereum/getWeb3";
+import web3 from "../../ethereum/web3";
 import { Router } from "../../routes";
 
 class RegisterSpeaker extends Component {
@@ -20,7 +20,7 @@ class RegisterSpeaker extends Component {
 
   componentDidMount = async () => {
     try {
-      const web3 = await getWeb3();
+      //   const web3 = await getWeb3();
       const accounts = await web3.eth.getAccounts();
       const contract = await zarim;
 
@@ -36,19 +36,16 @@ class RegisterSpeaker extends Component {
 
     this.setState({ loading: true, errorMessage: "" });
 
-    const [account] = this.state.accounts;
-
     try {
       await this.state.contract.methods
         .registerSpeaker(1, 2, 3, [5])
-        .send({ from: account });
+        .send({ from: this.state.accounts[0] });
 
       Router.pushRoute("/");
     } catch (err) {
       this.setState({ errorMessage: err.message });
     } finally {
       this.setState({ loading: false });
-      Router.pushRoute("/");
     }
   };
 

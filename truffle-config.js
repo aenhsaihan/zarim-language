@@ -16,7 +16,12 @@ module.exports = {
   networks: {
     develop: {
       port: 8545,
-      network_id: "5778",
+      network_id: "*",
+    },
+    ganache: {
+      host: "localhost",
+      port: 8545,
+      network_id: "5777",
     },
     ropsten: {
       provider: function () {
@@ -26,6 +31,16 @@ module.exports = {
         );
       },
       network_id: 3,
+      gas: 4000000, //make sure this gas allocation isn't over 4M, which is the max
+    },
+    kovan: {
+      provider: function () {
+        return new HDWalletProvider(
+          MNEMONIC,
+          "https://kovan.infura.io/v3/72a3f9acefc6439ca97271a80dfeeff9"
+        );
+      },
+      network_id: 42,
       gas: 4000000, //make sure this gas allocation isn't over 4M, which is the max
     },
   },
