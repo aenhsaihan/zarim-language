@@ -20,7 +20,6 @@ class RegisterSpeaker extends Component {
 
   componentDidMount = async () => {
     try {
-      //   const web3 = await getWeb3();
       const accounts = await web3.eth.getAccounts();
       const contract = await zarim;
 
@@ -37,9 +36,13 @@ class RegisterSpeaker extends Component {
     this.setState({ loading: true, errorMessage: "" });
 
     try {
-      await this.state.contract.methods
-        .registerSpeaker(1, 2, 3, [5])
-        .send({ from: this.state.accounts[0] });
+      await this.state.web3.eth.sendTransaction({
+        from: this.state.accounts[0],
+        to: this.state.contract.options.address,
+        data: this.state.contract.methods
+          .registerSpeaker(1, 2, 3, [5])
+          .encodeABI(),
+      });
 
       Router.pushRoute("/");
     } catch (err) {
