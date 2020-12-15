@@ -53,7 +53,7 @@ class App extends Component {
 
   renderNativeSpeakers() {
     if (this.state.closedSessions) {
-      const items = this.state.closedSessions.map((session) => {
+      const items = this.state.closedSessions.map((session, idx) => {
         return {
           header: session.speaker,
           description: (
@@ -62,6 +62,7 @@ class App extends Component {
             </Link>
           ),
           fluid: true,
+          key: idx,
         };
       });
 
