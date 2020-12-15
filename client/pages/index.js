@@ -24,24 +24,14 @@ class App extends Component {
       const closedSessionsCount = await contract.methods
         .getClosedSessionsCount(accounts[0])
         .call();
-      console.log(closedSessionsCount);
 
-      const closedSessions = [];
-      for (let index = 0; index < parseInt(closedSessionsCount); index++) {
-        const closedSession = await contract.methods
-          .closedSessions(accounts[0], index)
-          .call();
-        closedSessions.push(closedSession);
-      }
-      console.log(closedSessions);
+      this.getClosedSessions(closedSessionsCount, contract, accounts);
 
       this.setState({
         accounts,
         contract,
         speakersCount,
         nativeSpeaker,
-        closedSessionsCount,
-        closedSessions,
       });
     } catch (err) {
       // Catch any errors for any of the above operations.
@@ -49,29 +39,21 @@ class App extends Component {
     }
   };
 
-  getClosedSessions = async (closedSessionsCount) => {
-    const closedSessionss = [];
+  getClosedSessions = async (closedSessionsCount, contract, accounts) => {
+    const closedSessions = [];
     for (let index = 0; index < parseInt(closedSessionsCount); index++) {
-      const closedSession = await this.state.contract.methods
-        .closedSessions(this.state.accounts[0], index)
+      const closedSession = await contract.methods
+        .closedSessions(accounts[0], index)
         .call();
       closedSessions.push(closedSession);
-      debugger;
     }
 
-    this.setState({ closedSessions: closedSessionss });
+    this.setState({ closedSessions });
   };
 
   renderNativeSpeakers() {
-    // this.getClosedSessions().then((closedSessions) => {
-    //   return <Card.Group items={items} />;
-    // });
-    // // debugger;
-    // console.log("outside then");
-
     if (this.state.closedSessions) {
       const items = this.state.closedSessions.map((session) => {
-        console.log(session.speaker);
         return {
           header: session.speaker,
           description: (
@@ -102,7 +84,7 @@ class App extends Component {
     return (
       <Layout>
         <div className="App">
-          <h3>Open Sessions</h3>
+          <h3>Closed Sessions</h3>
 
           <Link route="/register/speaker">
             <a>
