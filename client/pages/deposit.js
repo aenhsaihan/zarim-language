@@ -4,6 +4,7 @@ import zarim from "../ethereum/zarim";
 import Layout from "../components/Layout";
 import { Link } from "../routes";
 import web3 from "../ethereum/web3";
+import { Router } from "../routes";
 
 class Deposit extends Component {
   state = {
@@ -37,6 +38,8 @@ class Deposit extends Component {
         data: this.state.contract.methods.deposit().encodeABI(),
         value: this.state.depositAmount,
       });
+
+      Router.pushRoute("/");
     } catch (err) {
       this.setState({ errorMessage: err.message });
     } finally {
