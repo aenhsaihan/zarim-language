@@ -10,6 +10,7 @@ class Deposit extends Component {
   state = {
     contract: null,
     depositAmount: null,
+    currentBalance: null,
     errorMessage: "",
     loading: false,
   };
@@ -18,7 +19,12 @@ class Deposit extends Component {
     try {
       const contract = await zarim;
 
-      this.setState({ contract });
+      const accounts = await web3.eth.getAccounts();
+      const currentBalance = await contract.methods
+        .balanceOf(accounts[0])
+        .call();
+
+      this.setState({ contract, currentBalance });
     } catch (err) {
       this.setState({ errorMessage: err.message });
     }
@@ -50,11 +56,11 @@ class Deposit extends Component {
   render() {
     return (
       <Layout>
-        <h3>Make a deposit</h3>
+        <h3>Current balance</h3>
 
         <Form onSubmit={this.onSubmit} error={!!this.state.errorMessage}>
           <Form.Field>
-            <label>Minimum Contribution</label>
+            <label>{this.state.currentBalance}</label>
             <Input
               label="wei"
               labelPosition="right"
