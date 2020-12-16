@@ -72,7 +72,11 @@ class App extends Component {
     } catch (err) {
       this.setState({ errorMessage: err.message });
     } finally {
-      this.setState({ loading: false });
+      const currentBalance = await this.state.contract.methods
+        .balanceOf(this.state.accounts[0])
+        .call();
+
+      this.setState({ loading: false, currentBalance });
     }
   };
 
