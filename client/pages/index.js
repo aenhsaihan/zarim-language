@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Card, Button } from "semantic-ui-react";
+import { Card, Button, Message, Form } from "semantic-ui-react";
 import zarim from "../ethereum/zarim";
 import Layout from "../components/Layout";
 import { Link } from "../routes";
@@ -12,6 +12,7 @@ class App extends Component {
     nativeSpeaker: null,
     errorMessage: null,
     currentBalance: null,
+    loading: false,
   };
 
   componentDidMount = async () => {
@@ -57,6 +58,24 @@ class App extends Component {
     this.setState({ closedSessions });
   };
 
+  withdraw = async (event) => {
+    event.preventDefault();
+
+    this.setState({ loading: true, errorMessage: "" });
+
+    try {
+      await web3.eth.sendTransaction({
+        from: this.state.accounts[0],
+        to: this.state.contract.options.address,
+        data: this.state.contract.methods.withdraw().encodeABI(),
+      });
+    } catch (err) {
+      this.setState({ errorMessage: err.message });
+    } finally {
+      this.setState({ loading: false });
+    }
+  };
+
   renderNativeSpeakers() {
     if (this.state.closedSessions) {
       const items = this.state.closedSessions.map((session, idx) => {
@@ -93,7 +112,13 @@ class App extends Component {
         <div className="App">
           <h3>Current balance</h3>
           <label>{this.state.currentBalance} wei</label>
-          <Button floated="right" content="Withdraw" secondary />
+          <Button
+            loading={this.state.loading}
+            onClick={this.withdraw}
+            floated="right"
+            content="Withdraw"
+            secondary
+          />
           <Link route="/deposit">
             <a>
               <Button floated="right" content="Deposit" primary />
@@ -113,6 +138,10 @@ class App extends Component {
           </Link>
 
           {this.renderNativeSpeakers()}
+
+          <Form error={!!this.state.errorMessage}>
+            <Message error header="Oops!" content={this.state.errorMessage} />
+          </Form>
         </div>
       </Layout>
     );
