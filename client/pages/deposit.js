@@ -60,7 +60,7 @@ class Deposit extends Component {
 
         <Form onSubmit={this.onSubmit} error={!!this.state.errorMessage}>
           <Form.Field>
-            <label>{this.state.currentBalance}</label>
+            <label>{this.state.currentBalance} wei</label>
             <Input
               label="wei"
               labelPosition="right"
