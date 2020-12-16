@@ -11,6 +11,7 @@ class App extends Component {
     speakersCount: null,
     nativeSpeaker: null,
     errorMessage: null,
+    currentBalance: null,
   };
 
   componentDidMount = async () => {
@@ -27,11 +28,16 @@ class App extends Component {
 
       this.getClosedSessions(closedSessionsCount, contract, accounts);
 
+      const currentBalance = await contract.methods
+        .balanceOf(accounts[0])
+        .call();
+
       this.setState({
         accounts,
         contract,
         speakersCount,
         nativeSpeaker,
+        currentBalance,
       });
     } catch (err) {
       // Catch any errors for any of the above operations.
@@ -85,8 +91,16 @@ class App extends Component {
     return (
       <Layout>
         <div className="App">
-          <h3>Closed Sessions</h3>
+          <h3>Current balance</h3>
+          <label>{this.state.currentBalance} wei</label>
+          <Button floated="right" content="Withdraw" secondary />
+          <Link route="/deposit">
+            <a>
+              <Button floated="right" content="Deposit" primary />
+            </a>
+          </Link>
 
+          <h3>Closed Sessions</h3>
           <Link route="/register/speaker">
             <a>
               <Button

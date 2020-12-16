@@ -13,10 +13,6 @@ export default () => {
         <Link route="/">
           <a className="item">Sessions</a>
         </Link>
-
-        <Link route="/deposit">
-          <a className="item">Deposit</a>
-        </Link>
       </Menu.Menu>
     </Menu>
   );
