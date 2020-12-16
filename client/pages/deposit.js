@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Form, Button, Input } from "semantic-ui-react";
+import { Form, Button, Input, Message } from "semantic-ui-react";
 import zarim from "../ethereum/zarim";
 import Layout from "../components/Layout";
 import { Link } from "../routes";
@@ -8,8 +8,9 @@ import web3 from "../ethereum/web3";
 class Deposit extends Component {
   state = {
     contract: null,
-    errorMessage: null,
     depositAmount: null,
+    errorMessage: "",
+    loading: false,
   };
 
   componentDidMount = async () => {
@@ -25,6 +26,8 @@ class Deposit extends Component {
   onSubmit = async (event) => {
     event.preventDefault();
 
+    this.setState({ loading: true, errorMessage: "" });
+
     const accounts = await web3.eth.getAccounts();
 
     try {
@@ -34,7 +37,11 @@ class Deposit extends Component {
         data: this.state.contract.methods.deposit().encodeABI(),
         value: this.state.depositAmount,
       });
-    } catch (err) {}
+    } catch (err) {
+      this.setState({ errorMessage: err.message });
+    } finally {
+      this.setState({ loading: false });
+    }
   };
 
   render() {
@@ -42,7 +49,7 @@ class Deposit extends Component {
       <Layout>
         <h3>Make a deposit</h3>
 
-        <Form onSubmit={this.onSubmit}>
+        <Form onSubmit={this.onSubmit} error={!!this.state.errorMessage}>
           <Form.Field>
             <label>Minimum Contribution</label>
             <Input
@@ -57,7 +64,10 @@ class Deposit extends Component {
             />
           </Form.Field>
 
-          <Button primary>Deposit</Button>
+          <Message error header="Oops!" content={this.state.errorMessage} />
+          <Button loading={this.state.loading} primary>
+            Deposit
+          </Button>
         </Form>
       </Layout>
     );
