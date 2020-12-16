@@ -22,12 +22,27 @@ class Deposit extends Component {
     }
   };
 
+  onSubmit = async (event) => {
+    event.preventDefault();
+
+    const accounts = await web3.eth.getAccounts();
+
+    try {
+      await web3.eth.sendTransaction({
+        from: accounts[0],
+        to: this.state.contract.options.address,
+        data: this.state.contract.methods.deposit().encodeABI(),
+        value: this.state.depositAmount,
+      });
+    } catch (err) {}
+  };
+
   render() {
     return (
       <Layout>
         <h3>Make a deposit</h3>
 
-        <Form>
+        <Form onSubmit={this.onSubmit}>
           <Form.Field>
             <label>Minimum Contribution</label>
             <Input
