@@ -16,6 +16,7 @@ class App extends Component {
     language: "",
     price: "",
     duration: "",
+    availableSession: "",
   };
 
   componentDidMount = async () => {
@@ -36,12 +37,17 @@ class App extends Component {
         .balanceOf(accounts[0])
         .call();
 
+      const availableSession = await contract.methods
+        .sessions("0xae0F05b8F3053514ec9845d72c541133ea719DaB")
+        .call();
+
       this.setState({
         accounts,
         contract,
         speakersCount,
         nativeSpeaker,
         currentBalance,
+        availableSession,
       });
     } catch (err) {
       // Catch any errors for any of the above operations.
@@ -83,7 +89,17 @@ class App extends Component {
     }
   };
 
-  renderNativeSpeakers() {
+  renderAvailableSessions() {
+    const item = {
+      header: this.state.availableSession.speaker,
+      description: <a>Enter session</a>,
+      fluid: true,
+    };
+
+    return <Card.Group items={[item]} />;
+  }
+
+  renderClosedSessions() {
     if (this.state.closedSessions) {
       const items = this.state.closedSessions.map((session, idx) => {
         return {
@@ -100,17 +116,6 @@ class App extends Component {
 
       return <Card.Group items={items} />;
     }
-
-    const item = {
-      header: this.state.nativeSpeaker,
-      description: (
-        <Link route={`/sessions/${this.state.nativeSpeaker}`}>
-          <a>Enter session</a>
-        </Link>
-      ),
-      fluid: true,
-    };
-    return <Card.Group items={[item]} />;
   }
 
   onSubmit = async (event) => {
@@ -195,6 +200,9 @@ class App extends Component {
             ></Button>
           </Form>
 
+          <h3>Available Sessions</h3>
+          {this.renderAvailableSessions()}
+
           <h3>Closed Sessions</h3>
           <Link route="/register/speaker">
             <a>
@@ -207,7 +215,7 @@ class App extends Component {
             </a>
           </Link>
 
-          {this.renderNativeSpeakers()}
+          {this.renderClosedSessions()}
 
           <Form error={!!this.state.errorMessage}>
             <Message error header="Oops!" content={this.state.errorMessage} />
