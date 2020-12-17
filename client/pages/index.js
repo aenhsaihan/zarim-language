@@ -67,6 +67,26 @@ class App extends Component {
     this.setState({ closedSessions });
   };
 
+  closeSession = async (event) => {
+    event.preventDefault();
+
+    this.setState({ loading: true, errorMessage: "" });
+
+    try {
+      await web3.eth.sendTransaction({
+        from: this.state.accounts[0],
+        to: this.state.contract.options.address,
+        data: this.state.contract.methods
+          .closeSession("0xae0F05b8F3053514ec9845d72c541133ea719DaB")
+          .encodeABI(),
+      });
+    } catch (err) {
+      this.setState({ errorMessage: err.message });
+    } finally {
+      this.setState({ loading: false });
+    }
+  };
+
   withdraw = async (event) => {
     event.preventDefault();
 
@@ -201,6 +221,13 @@ class App extends Component {
           </Form>
 
           <h3>Available Sessions</h3>
+          <Button
+            loading={this.state.loading}
+            onClick={this.closeSession}
+            floated="right"
+            content="Close"
+            primary
+          />
           {this.renderAvailableSessions()}
 
           <h3>Closed Sessions</h3>
