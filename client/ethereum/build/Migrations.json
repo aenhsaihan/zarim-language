@@ -927,8 +927,8 @@
     "5777": {
       "events": {},
       "links": {},
-      "address": "0xb34aE0C34eEe84d2b8ce87e0b72203A4Cf6be08A",
-      "transactionHash": "0x234ff3db0c5b0b753df4b2e2cd564888f39b2e2e89007774f9a1697039451555"
+      "address": "0x77fd5A95A2AC036560EfBD976608896f4001D3de",
+      "transactionHash": "0xc98f4859cdd7ac000c13f4823070695b5b6e01a4ad558778aef3ea4ae17e3aa9"
     },
     "5778": {
       "events": {},
@@ -938,7 +938,7 @@
     }
   },
   "schemaVersion": "3.0.23",
-  "updatedAt": "2020-12-16T20:37:13.611Z",
+  "updatedAt": "2020-12-17T23:38:41.929Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",

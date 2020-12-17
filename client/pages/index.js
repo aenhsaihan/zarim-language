@@ -8,8 +8,6 @@ import web3 from "../ethereum/web3";
 class App extends Component {
   state = {
     contract: "",
-    speakersCount: "",
-    nativeSpeaker: "",
     errorMessage: "",
     currentBalance: "",
     loading: false,
@@ -24,12 +22,10 @@ class App extends Component {
       const accounts = await web3.eth.getAccounts();
       const contract = await zarim;
 
-      const speakersCount = await contract.methods.getSpeakersCount(5).call();
-      const nativeSpeaker = await contract.methods.nativeSpeakers(0, 0).call();
-
       const closedSessionsCount = await contract.methods
         .getClosedSessionsCount(accounts[0])
         .call();
+      console.log(closedSessionsCount);
 
       this.getClosedSessions(closedSessionsCount, contract, accounts);
 
@@ -44,8 +40,6 @@ class App extends Component {
       this.setState({
         accounts,
         contract,
-        speakersCount,
-        nativeSpeaker,
         currentBalance,
         availableSession,
       });
