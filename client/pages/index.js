@@ -7,12 +7,15 @@ import web3 from "../ethereum/web3";
 
 class App extends Component {
   state = {
-    contract: null,
-    speakersCount: null,
-    nativeSpeaker: null,
-    errorMessage: null,
-    currentBalance: null,
+    contract: "",
+    speakersCount: "",
+    nativeSpeaker: "",
+    errorMessage: "",
+    currentBalance: "",
     loading: false,
+    language: "",
+    price: "",
+    duration: "",
   };
 
   componentDidMount = async () => {
@@ -87,7 +90,7 @@ class App extends Component {
           header: session.speaker,
           description: (
             <Link route={`/sessions/${session.speaker}`}>
-              <a>Enter session</a>
+              <a>See session</a>
             </Link>
           ),
           fluid: true,
@@ -110,6 +113,30 @@ class App extends Component {
     return <Card.Group items={[item]} />;
   }
 
+  onSubmit = async (event) => {
+    event.preventDefault();
+
+    this.setState({ loading: true, errorMessage: "" });
+
+    try {
+      await web3.eth.sendTransaction({
+        from: this.state.accounts[0],
+        to: this.state.contract.options.address,
+        data: this.state.contract.methods
+          .openSession(
+            this.state.language,
+            this.state.price,
+            this.state.duration
+          )
+          .encodeABI(),
+      });
+    } catch (err) {
+      this.setState({ errorMessage: err.message });
+    } finally {
+      this.setState({ loading: false });
+    }
+  };
+
   render() {
     return (
       <Layout>
@@ -128,6 +155,45 @@ class App extends Component {
               <Button floated="right" content="Deposit" primary />
             </a>
           </Link>
+
+          <h3>Open Session</h3>
+          <Form onSubmit={this.onSubmit}>
+            <Form.Field>
+              <label>Language</label>
+              <input
+                value={this.state.language}
+                onChange={(event) =>
+                  this.setState({ language: event.target.value })
+                }
+              />
+            </Form.Field>
+
+            <Form.Field>
+              <label>Price</label>
+              <input
+                value={this.state.price}
+                onChange={(event) =>
+                  this.setState({ price: event.target.value })
+                }
+              />
+            </Form.Field>
+
+            <Form.Field>
+              <label>Duration</label>
+              <input
+                value={this.state.duration}
+                onChange={(event) =>
+                  this.setState({ duration: event.target.value })
+                }
+              />
+            </Form.Field>
+
+            <Button
+              loading={this.state.loading}
+              primary
+              content="Open"
+            ></Button>
+          </Form>
 
           <h3>Closed Sessions</h3>
           <Link route="/register/speaker">
