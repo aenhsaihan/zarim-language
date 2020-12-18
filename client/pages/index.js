@@ -128,7 +128,18 @@ class App extends Component {
     };
 
     if (this.state.availableSession.open) {
-      return <Card.Group items={[item]} />;
+      return (
+        <React.Fragment>
+          <Button
+            loading={this.state.loading}
+            onClick={this.closeSession}
+            floated="right"
+            content="Close"
+            primary
+          />
+          <Card.Group items={[item]} />
+        </React.Fragment>
+      );
     }
   }
 
@@ -238,13 +249,7 @@ class App extends Component {
           </Form>
 
           <h3>Available Sessions</h3>
-          <Button
-            loading={this.state.loading}
-            onClick={this.closeSession}
-            floated="right"
-            content="Close"
-            primary
-          />
+
           {this.renderAvailableSessions()}
 
           <h3>Closed Sessions</h3>
