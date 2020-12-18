@@ -15,6 +15,7 @@ class App extends Component {
     price: "",
     duration: "",
     availableSession: "",
+    isSessionOpen: "",
   };
 
   componentDidMount = async () => {
@@ -41,6 +42,7 @@ class App extends Component {
         contract,
         currentBalance,
         availableSession,
+        isSessionOpen: availableSession.open,
       });
     } catch (err) {
       // Catch any errors for any of the above operations.
@@ -73,10 +75,26 @@ class App extends Component {
           .closeSession(this.state.accounts[0])
           .encodeABI(),
       });
+
+      this.setState({ isSessionOpen: false });
     } catch (err) {
       this.setState({ errorMessage: err.message });
     } finally {
-      this.setState({ loading: false });
+      const closedSessionsCount = await this.state.contract.methods
+        .getClosedSessionsCount(this.state.accounts[0])
+        .call();
+
+      this.getClosedSessions(
+        closedSessionsCount,
+        this.state.contract,
+        this.state.accounts
+      );
+
+      const availableSession = await this.state.contract.methods
+        .sessions(this.state.accounts[0])
+        .call();
+
+      this.setState({ loading: false, availableSession });
     }
   };
 
@@ -153,7 +171,11 @@ class App extends Component {
     } catch (err) {
       this.setState({ errorMessage: err.message });
     } finally {
-      this.setState({ loading: false });
+      const availableSession = await this.state.contract.methods
+        .sessions(this.state.accounts[0])
+        .call();
+
+      this.setState({ loading: false, availableSession });
     }
   };
 
