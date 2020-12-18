@@ -25,7 +25,6 @@ class App extends Component {
       const closedSessionsCount = await contract.methods
         .getClosedSessionsCount(accounts[0])
         .call();
-      console.log(closedSessionsCount);
 
       this.getClosedSessions(closedSessionsCount, contract, accounts);
 
@@ -34,7 +33,7 @@ class App extends Component {
         .call();
 
       const availableSession = await contract.methods
-        .sessions("0xae0F05b8F3053514ec9845d72c541133ea719DaB")
+        .sessions(accounts[0])
         .call();
 
       this.setState({
@@ -71,7 +70,7 @@ class App extends Component {
         from: this.state.accounts[0],
         to: this.state.contract.options.address,
         data: this.state.contract.methods
-          .closeSession("0xae0F05b8F3053514ec9845d72c541133ea719DaB")
+          .closeSession(this.state.accounts[0])
           .encodeABI(),
       });
     } catch (err) {
@@ -110,7 +109,9 @@ class App extends Component {
       fluid: true,
     };
 
-    return <Card.Group items={[item]} />;
+    if (this.state.availableSession.open) {
+      return <Card.Group items={[item]} />;
+    }
   }
 
   renderClosedSessions() {

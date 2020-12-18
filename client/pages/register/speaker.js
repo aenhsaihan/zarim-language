@@ -40,7 +40,12 @@ class RegisterSpeaker extends Component {
         from: this.state.accounts[0],
         to: this.state.contract.options.address,
         data: this.state.contract.methods
-          .registerSpeaker(1, 2, 3, [5])
+          .registerSpeaker(
+            this.state.age,
+            this.state.gender,
+            this.state.country,
+            [5]
+          )
           .encodeABI(),
       });
 
