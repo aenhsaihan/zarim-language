@@ -13,6 +13,10 @@ export default () => {
         <Link route="/">
           <a className="item">Sessions</a>
         </Link>
+
+        <Link route="/register/speaker">
+          <a className="item">Register</a>
+        </Link>
       </Menu.Menu>
     </Menu>
   );

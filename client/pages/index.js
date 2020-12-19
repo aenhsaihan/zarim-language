@@ -252,16 +252,6 @@ class App extends Component {
           {this.renderAvailableSessions()}
 
           <h3>Closed Sessions</h3>
-          <Link route="/register/speaker">
-            <a>
-              <Button
-                floated="right"
-                content="Register"
-                icon="add circle"
-                primary
-              />
-            </a>
-          </Link>
 
           {this.renderClosedSessions()}
 
