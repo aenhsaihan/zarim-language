@@ -49,6 +49,28 @@ class App extends Component {
     }
   };
 
+  withdraw = async (event) => {
+    event.preventDefault();
+
+    this.setState({ loading: true, errorMessage: "" });
+
+    try {
+      await web3.eth.sendTransaction({
+        from: this.state.accounts[0],
+        to: this.state.contract.options.address,
+        data: this.state.contract.methods.withdraw().encodeABI(),
+      });
+    } catch (err) {
+      this.setState({ errorMessage: err.message });
+    } finally {
+      const currentBalance = await this.state.contract.methods
+        .balanceOf(this.state.accounts[0])
+        .call();
+
+      this.setState({ loading: false, currentBalance });
+    }
+  };
+
   openSession = async (event) => {
     event.preventDefault();
 
@@ -122,28 +144,6 @@ class App extends Component {
         .call();
 
       this.setState({ loading: false, availableSession });
-    }
-  };
-
-  withdraw = async (event) => {
-    event.preventDefault();
-
-    this.setState({ loading: true, errorMessage: "" });
-
-    try {
-      await web3.eth.sendTransaction({
-        from: this.state.accounts[0],
-        to: this.state.contract.options.address,
-        data: this.state.contract.methods.withdraw().encodeABI(),
-      });
-    } catch (err) {
-      this.setState({ errorMessage: err.message });
-    } finally {
-      const currentBalance = await this.state.contract.methods
-        .balanceOf(this.state.accounts[0])
-        .call();
-
-      this.setState({ loading: false, currentBalance });
     }
   };
 
