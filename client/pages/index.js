@@ -42,11 +42,38 @@ class App extends Component {
         contract,
         currentBalance,
         availableSession,
-        isSessionOpen: availableSession.open,
       });
     } catch (err) {
       // Catch any errors for any of the above operations.
       this.setState({ errorMessage: err.message });
+    }
+  };
+
+  openSession = async (event) => {
+    event.preventDefault();
+
+    this.setState({ loading: true, errorMessage: "" });
+
+    try {
+      await web3.eth.sendTransaction({
+        from: this.state.accounts[0],
+        to: this.state.contract.options.address,
+        data: this.state.contract.methods
+          .openSession(
+            this.state.language,
+            this.state.price,
+            this.state.duration
+          )
+          .encodeABI(),
+      });
+    } catch (err) {
+      this.setState({ errorMessage: err.message });
+    } finally {
+      const availableSession = await this.state.contract.methods
+        .sessions(this.state.accounts[0])
+        .call();
+
+      this.setState({ loading: false, availableSession });
     }
   };
 
@@ -162,34 +189,6 @@ class App extends Component {
     }
   }
 
-  onSubmit = async (event) => {
-    event.preventDefault();
-
-    this.setState({ loading: true, errorMessage: "" });
-
-    try {
-      await web3.eth.sendTransaction({
-        from: this.state.accounts[0],
-        to: this.state.contract.options.address,
-        data: this.state.contract.methods
-          .openSession(
-            this.state.language,
-            this.state.price,
-            this.state.duration
-          )
-          .encodeABI(),
-      });
-    } catch (err) {
-      this.setState({ errorMessage: err.message });
-    } finally {
-      const availableSession = await this.state.contract.methods
-        .sessions(this.state.accounts[0])
-        .call();
-
-      this.setState({ loading: false, availableSession });
-    }
-  };
-
   render() {
     return (
       <Layout>
@@ -210,7 +209,7 @@ class App extends Component {
           </Link>
 
           <h3>Open Session</h3>
-          <Form onSubmit={this.onSubmit}>
+          <Form onSubmit={this.openSession}>
             <Form.Field>
               <label>Language</label>
               <input
