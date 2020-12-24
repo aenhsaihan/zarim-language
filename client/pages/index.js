@@ -186,7 +186,12 @@ class App extends Component {
         };
       });
 
-      return <Card.Group items={items} />;
+      return (
+        <React.Fragment>
+          <h3>Closed Sessions</h3>
+          <Card.Group items={items} />
+        </React.Fragment>
+      );
     }
   }
 
@@ -249,8 +254,6 @@ class App extends Component {
           </Form>
 
           {this.renderAvailableSessions()}
-
-          <h3>Closed Sessions</h3>
 
           {this.renderClosedSessions()}
 
