@@ -157,6 +157,7 @@ class App extends Component {
     if (this.state.availableSession.open) {
       return (
         <React.Fragment>
+          <h3>Available Sessions</h3>
           <Button
             loading={this.state.loading}
             onClick={this.closeSession}
@@ -246,8 +247,6 @@ class App extends Component {
               content="Open"
             ></Button>
           </Form>
-
-          <h3>Available Sessions</h3>
 
           {this.renderAvailableSessions()}
 
