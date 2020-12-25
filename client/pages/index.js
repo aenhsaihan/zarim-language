@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Card, Button, Message, Form } from "semantic-ui-react";
+import { Card, Button, Message, Form, Image } from "semantic-ui-react";
 import zarim from "../ethereum/zarim";
 import Layout from "../components/Layout";
 import { Link } from "../routes";
@@ -147,6 +147,35 @@ class App extends Component {
     }
   };
 
+  renderIncomingSession() {
+    return (
+      <Card fluid="true">
+        <Card.Content>
+          <Image
+            floated="right"
+            size="mini"
+            src="https://react.semantic-ui.com/images/avatar/large/steve.jpg"
+          />
+          <Card.Header>Steve Sanders</Card.Header>
+          <Card.Meta>Friends of Elliot</Card.Meta>
+          <Card.Description>
+            Steve has opened a session <strong>best friends</strong>
+          </Card.Description>
+        </Card.Content>
+        <Card.Content extra>
+          <div className="ui two buttons">
+            <Button basic color="green">
+              Approve
+            </Button>
+            <Button basic color="red">
+              Decline
+            </Button>
+          </div>
+        </Card.Content>
+      </Card>
+    );
+  }
+
   renderAvailableSessions() {
     const item = {
       header: this.state.availableSession.speaker,
@@ -199,6 +228,8 @@ class App extends Component {
     return (
       <Layout>
         <div className="App">
+          {this.renderIncomingSession()}
+
           <h3>Current balance</h3>
           <label>{this.state.currentBalance} wei</label>
           <Button
